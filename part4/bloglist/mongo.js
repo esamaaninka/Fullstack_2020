@@ -1,42 +1,43 @@
 const mongoose = require('mongoose')
-
+require('dotenv').config()
+/*
 if ( process.argv.length<3 ) {
   console.log('give password as argument')
   process.exit(1)
 }
 
 const password = process.argv[2]
+*/
+const mongoUrl = process.env.MONGODB_URI
 
-const url =
-    `mongodb+srv://esa-fullstack:${password}@cluster0-fhhrm.mongodb.net/note-app?retryWrites=true&w=majority`
-    //`mongodb+srv://fullstack:${password}@cluster0-ostce.mongodb.net/test?retryWrites=true`
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
+const blogSchema = mongoose.Schema({
+  title: String,
+  author: String,
+  url: String,
+  likes: Number
 })
 
-const Note = mongoose.model('Note', noteSchema)
+const Blog = mongoose.model('Blog', blogSchema)
 
-const note = new Note({
-  content: 'HTML is Easy as cake, or so I was imaging',
-  date: new Date(),
-  important: true,
+const blog = new Blog({
+  title: 'MongoDB Atlas test blog entry',
+  Author: 'Esa Maaninka',
+  url: 'tbd',
+  likes: 1
 })
 
 
-note.save().then(response => {
-  console.log('note saved!', response)
+blog.save().then(response => {
+  console.log('blog saved!', response)
   //mongoose.connection.close()
 })
 
-Note.find({}).then(result => {
+Blog.find({}).then(result => {
 //Note.find({}).then(result => {
-  result.forEach(note => {
-    console.log(note)
+  result.forEach(blog => {
+    console.log(blog)
   })
   mongoose.connection.close()
 })
