@@ -14,7 +14,14 @@ blogRouter.get('/api/blogs', (request, response, next) => {
   
   blogRouter.post('/api/blogs', (request, response, next) => {
     const blog = new Blog(request.body)
-  
+    /* yo tekee saman
+    const blog = new Blog({
+        title: request.body.title,
+        author: request.body.author,
+        url: request.body.url,
+        likes: request.body.likes
+    })
+*/
     blog
       .save()
       .then(result => {
