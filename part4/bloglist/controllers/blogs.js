@@ -1,7 +1,6 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-// TÄSSÄ JOTAIN VIKAA
 blogRouter.get('/api/blogs', (request, response, next) => {
     Blog
       .find({})
@@ -10,6 +9,18 @@ blogRouter.get('/api/blogs', (request, response, next) => {
         response.json(blogs.map(b => b.toJSON()))
       })
       .catch(error => next(error))
+  })
+
+  blogRouter.get('/api/blogs/:id', (request, response, next) => {
+    //console.log('/api/blogs/:id', request.params.id)
+    Blog
+        //.findOne({id: `${id}`})
+        .findById(request.params.id)
+        .then(blog => {
+            //console.log('blog:', blog)
+            response.json(blog.toJSON())
+        })
+        .catch(error => next(error))
   })
   
   blogRouter.post('/api/blogs', (request, response, next) => {

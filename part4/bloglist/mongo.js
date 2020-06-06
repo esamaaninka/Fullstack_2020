@@ -22,7 +22,7 @@ const blogSchema = mongoose.Schema({
 const Blog = mongoose.model('Blog', blogSchema)
 
 const blog = new Blog({
-  title: 'MongoDB Atlas test blog entry',
+  title: 'MongoDB Atlas test blog entry again 2',
   Author: 'Esa Maaninka',
   url: 'tbd',
   likes: 1
