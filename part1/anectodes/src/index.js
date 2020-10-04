@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Button = (props) => { 
-  //console.log(props)
   const { handleClick, text } = props
   return (
     <button onClick={handleClick}>
@@ -13,7 +12,6 @@ const Button = (props) => {
 const Display = props => <div>{props.text}</div>
 
 const MostVoted = ({anectodes, mostvoted}) => {
-  //console.log('Mostvoted: ', mostvoted)
   return(
     <div>{anecdotes[mostvoted]}</div>
   )
@@ -28,11 +26,9 @@ const App = (anectodes) => {
       <h1>Anectode of the day</h1>
       <Display text={anecdotes[selected]}/>
       <Display text={'has ' + votes[selected] + ' votes'} />
-      {//<Display text={'Votes ' + votes} />
-      }
       <Button 
             handleClick={() => { 
-                //console.log('Voting: ', selected) 
+                //console.log('Voting: ', selected)                 
                 let voted = [...votes]
                 voted[selected] +=1 
                 setVote(voted)
@@ -49,7 +45,7 @@ const App = (anectodes) => {
       <Display text={anectodes[votes.indexOf(Math.max(...votes))]} />
       <MostVoted anecdotes={anectodes} mostvoted={votes.indexOf(Math.max(...votes))}/>
       { 
-      //<Display text={votes} />
+        //<Display text={votes} />
       }
       
     </div>
