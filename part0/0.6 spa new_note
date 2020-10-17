@@ -1,0 +1,21 @@
+title spa new_note
+
+
+note over browser:
+browser has rendered notes 
+to display on application start
+end note 
+
+
+note over browser:
+User enters a note "Hello Hello" 
+into the text input box, and press Save -button. 
+Spa.js updates browsers internal notes list and redraws
+display, after which sends HTTP POST request to server
+end note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: HTTP 201 response:{"message":"note created"}
+note over browser:
+event handler in browser spa.js after receiving 201
+writes {"message":"note created"} to console
+end note
