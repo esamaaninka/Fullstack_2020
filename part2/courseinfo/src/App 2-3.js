@@ -5,7 +5,9 @@ import './App.css';
 const Course = ({course} ) => {
   //console.log('Course: ', course.name)
   //console.log('Course: ', course.parts[0])
+  
   return(
+
     <div>
       <h1>{course.name}</h1>
       {course.parts.map(parts => <p key={parts.id}> {parts.name + ' ' + parts.exercises} </p>) }
