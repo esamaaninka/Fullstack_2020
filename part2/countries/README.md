@@ -1,3 +1,10 @@
+BUGIT:
+- kun filteroidulta listalta valittu maa, sen jälkeen ei enää palaa takaisin aikaisempaan, esim x antaa Luxemburg
+ja Mexico, jos jatkaa xi saa Mexicon mutta jos tyhjää hakukentän ja jos vaihtaa kirjaimen
+näyttää vain ensimmäisen listalta -> pitää reload app
+- 
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

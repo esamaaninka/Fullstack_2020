@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import axios from 'axios'
+import GetWeather from './components/weather'
 //import { queryByPlaceholderText } from '@testing-library/react';
 
 
@@ -30,7 +31,15 @@ const App = () => {
 
   const DisplayCountryDetails = (theC) => {
       console.log('DisplayCountryDetails : ', theC)
+      // tämä aiheuttaa virheen, käytä useEffect poistaa
+            /*Warning: Cannot update a component (`App`) while rendering a different component (`DisplayCountries`). To locate the bad setState() call inside `DisplayCountries`, follow the stack trace as described in https://fb.me/setstate-in-render
+          in DisplayCountries (at App.js:114)
+          in div (at App.js:108)
+          in App (at src/index.js:9)
+          in StrictMode (at src/index.js:8)*/
+      useEffect(() => {
       setTheCountry(theC)
+      })
       //setCountryToSearch(theC.alpha3code)
       return (
         <div>          
@@ -38,13 +47,13 @@ const App = () => {
             <p>capital {theC.capital}</p>
             <p>population {theC.population}</p>
           <h2>languages</h2>          
-            <p>{theC.languages.map(p => <p key={p.name}>{p.name}</p>)}</p>
+            {theC.languages.map(p => <p key={p.name}>{p.name}</p>)}
           <img height="70" width="140" src={theC.flag} alt="country flag" />
           
-          { /* <GetWheather  />
-          */
-          }
-        
+          {//<p>{getWeather(theC.capital)}</p>
+          // ei voi olla tässä kaatuu
+  }
+          
         </div>
       )
   }
@@ -64,15 +73,15 @@ const App = () => {
     if(searched_countries.length > 10) return <div>Search criteria too wide</div>
     else if(searched_countries.length===0) return <div>No countries found with given criteria</div>
     
-    // ei toimi tämän vertailun kanssa
-    else if(searched_countries.length===1 | theCountry !== '') {
+    // ei toimi tämän vertailun kanssa -> strcmp ja palauttaa valittu maa ei ekaa listalla!! 
+    else if(searched_countries.length===1 || theCountry !== '') {
       return DisplayCountryDetails(searched_countries[0])
     } 
     else if(searched_countries.length >1 ) {
       
       //tästä pitäisi nappia painettaessa päästä ulos tuolta DisplayC..
       return searched_countries.map(p => 
-        <p key={p.name}>
+        <div key={p.name}>
           {p.name}{' '}
           <button onClick={() => {
             //setCountryToSearch(p)
@@ -82,12 +91,12 @@ const App = () => {
             // KTS 1D function that returns function kohta 
             DisplayCountryDetails(p)
             
-            //console.log('TheCountry after button: ', theCountry)
+            console.log('TheCountry after button: ', theCountry)
           }
           }>
             show
           </button>
-        </p>)
+        </div>)
     }
     else return <div>Why we ended up here ? </div>
         
@@ -98,6 +107,8 @@ const App = () => {
     console.log("getSearchCountry: ", event.target.value)
     return(
       setCountryToSearch(event.target.value)
+      // pitäiskö tyhjentää samalla 
+      //setTheCountry("")
       
     )
   }
@@ -109,6 +120,7 @@ const App = () => {
           /> 
     
        <DisplayCountries/>
+       <GetWeather capital={theCountry.capita}/>
        
   </div>
   )
