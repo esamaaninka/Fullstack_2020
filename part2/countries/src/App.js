@@ -26,7 +26,7 @@ const App = () => {
   }, [])
   
   
-    
+    // pitäiskö getWeather lisätä tähän useEffect dependency arrayn kanssa ? liipaista haku kun theCountry asetettu
   
 
   const DisplayCountryDetails = (theC) => {

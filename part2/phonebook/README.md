@@ -8,6 +8,10 @@ with backend change the baseURL path in ../services/persons.js to:
 
 
 
+
+
+-----------------------------------------------------------------------------------
+
 To use the json-server locally in the project
 
 %npm install json-server --save-dev 
@@ -18,6 +22,7 @@ and to run:
 %npm run server
 
 In browser localhost:3001/persons to see the database content-
+
 
 write some predefined data to project root dir to file db.json, e.g:
 {
