@@ -6,7 +6,11 @@ blogRouter.get('/api/blogs', (request, response, next) => {
       .find({})
       .then(blogs => {
         //response.json(blogs)
-        response.json(blogs.map(b => b.toJSON()))
+        if(blogs){
+          response.json(blogs.map(b => b.toJSON()))
+        } else {
+          response.status(404).end()
+        }
       })
       .catch(error => next(error))
   })
@@ -18,7 +22,11 @@ blogRouter.get('/api/blogs', (request, response, next) => {
         .findById(request.params.id)
         .then(blog => {
             //console.log('blog:', blog)
-            response.json(blog.toJSON())
+            if(blog){
+              response.json(blog.toJSON())
+            } else {
+              response.status(404).end()
+            }
         })
         .catch(error => next(error))
   })

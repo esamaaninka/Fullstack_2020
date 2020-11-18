@@ -1,0 +1,23 @@
+@PORT=3009
+
+###
+# GET all blogs
+GET http://localhost:{{PORT}}/api/blogs
+
+###
+# GET by ID 
+# copy paste blog id to the ID variable
+@ID = 5ed20a82e177be0d7c1f04af
+GET http://localhost:{{PORT}}/api/blogs/{{ID}}
+
+###
+# POST A NEW BLOG ITEM
+POST http://localhost:{{PORT}}/api/blogs/
+Content-Type: application/json
+
+{
+		"title": "Postataan taas 2",
+  		"author": "Esa Maaninka",
+  		"url": "www.google.com"
+}
+

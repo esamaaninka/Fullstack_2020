@@ -1,9 +1,0 @@
-@PORT=3003
-POST http://localhost:{{PORT}}/api/blogs/
-Content-Type: application/json
-
-{
-		"title": "Posting a blog entry 8",
-  		"author": "Esa Maaninka",
-  		"url": "some url here"
-}
