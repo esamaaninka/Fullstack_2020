@@ -21,3 +21,7 @@ Content-Type: application/json
   		"url": "www.google.com"
 }
 
+### 
+# Delete a blog by id
+
+DELETE http://localhost:{{PORT}}/api/blogs/{{ID}}
