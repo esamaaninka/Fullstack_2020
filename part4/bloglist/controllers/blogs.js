@@ -1,6 +1,7 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 
+/*
 blogRouter.get('/api/blogs', (request, response, next) => {
     Blog
       .find({})
@@ -13,6 +14,12 @@ blogRouter.get('/api/blogs', (request, response, next) => {
         }
       })
       .catch(error => next(error))
+  }) */ 
+  
+  // changed the promise -version to async-await, try
+  blogRouter.get('/api/blogs/', async (request, response) => { 
+    const blogs = await Blog.find({})
+    response.json(blogs)
   })
 
   blogRouter.get('/api/blogs/:id', (request, response, next) => {
