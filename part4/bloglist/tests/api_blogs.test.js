@@ -22,15 +22,31 @@ describe('blogs in test database', () => {
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
+      
 
-    console.log('Jujhuu',response.headers)
+      //console.log('Headers: ',response.headers)
+      //console.log('Id: ', response.body[0])
+    
   })
 
   test('testdb contains correct amount of blogs', async () => {
     const blogsAtStart = await helper.blogsInDb()
     
     expect(blogsAtStart.length).toBe(helper.initialBlogs.length)
+    })
+
+
+  test('test blog default unique _id transformed to id  ', async () => {
+    //const response = await api
+      //.get('/api/blogs')
+      //.expect(200)
+      const blogsAtStart = await helper.blogsInDb()
+      //console.log('blogsAtStart', blogsAtStart)
+      expect(blogsAtStart[0].id).toBeDefined()
+      
+      //.console.log('Id: ', response.body[0].id)
   })
+
 })
 
 afterAll(() => {
