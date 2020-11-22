@@ -37,17 +37,17 @@ blogRouter.get('/api/blogs', (request, response, next) => {
         })
         .catch(error => next(error))
   })
-  
+  /*
   blogRouter.post('/api/blogs', (request, response, next) => {
     const blog = new Blog(request.body)
-    /* yo tekee saman
-    const blog = new Blog({
-        title: request.body.title,
-        author: request.body.author,
-        url: request.body.url,
-        likes: request.body.likes
-    })
-*/
+    // yo tekee saman
+    //const blog = new Blog({
+      //  title: request.body.title,
+      //  author: request.body.author,
+      //  url: request.body.url,
+      //  likes: request.body.likes
+    //})
+
     blog
       .save()
       .then(result => {
@@ -55,5 +55,13 @@ blogRouter.get('/api/blogs', (request, response, next) => {
       })
       .catch(error => next(error))
   })
+*/
+  blogRouter.post('/api/blogs', async (request, response) => {
+    const blog = new Blog(request.body)
+    
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  })
+
 
   module.exports = blogRouter

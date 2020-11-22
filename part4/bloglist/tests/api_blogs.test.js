@@ -47,7 +47,43 @@ describe('blogs in test database', () => {
       //.console.log('Id: ', response.body[0].id)
   })
 
-})
+  test('HTTP POST to add a new blog successfull', async () => {
+    const newBlog = {
+      title: 'Post a new blog',
+      author: 'blog-api -tesdriver', 
+      url: 'www.theurl.com'
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+
+    const blogsAfterPost = await helper.blogsInDb()
+    expect (blogsAfterPost.length).toBe(3)
+    expect(blogsAfterPost[2].title).toEqual(newBlog.title)
+  })
+
+  test('Check blog likes included with default 0', async () => {
+    const newBlog = {
+      title: 'Post a new blog without like field',
+      author: 'blog-api -tesdriver', 
+      url: 'www.theurl.com'
+    }
+
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+
+    const blogsAfterPost = await helper.blogsInDb()
+
+    expect(blogsAfterPost[2].likes).toBe(0)
+  })
+
+
+}) // end of describe('blogs in test database'...
+
+
 
 afterAll(() => {
   mongoose.connection.close()

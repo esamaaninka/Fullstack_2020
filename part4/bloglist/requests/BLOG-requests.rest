@@ -16,8 +16,8 @@ POST http://localhost:{{PORT}}/api/blogs/
 Content-Type: application/json
 
 {
-		"title": "Postataan taas 2",
-  		"author": "Esa Maaninka",
+		"title": "Postataan taas 22",
+  		"author": "Teppo Testaaja",
   		"url": "www.google.com"
 }
 
