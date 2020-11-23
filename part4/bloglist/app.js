@@ -9,7 +9,7 @@ const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
 
 logger.info('Connecting to ', config.MONGODB_URI)
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 
 app.use(cors())
 //app.use(express.static('build')) //NOT BUILT YET

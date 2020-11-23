@@ -7,7 +7,7 @@ GET http://localhost:{{PORT}}/api/blogs
 ###
 # GET by ID 
 # copy paste blog id to the ID variable
-@ID = 5ed20a82e177be0d7c1f04af
+@ID = 5fbbb59f948eaa52d04d38e0
 GET http://localhost:{{PORT}}/api/blogs/{{ID}}
 
 ###
@@ -25,3 +25,15 @@ Content-Type: application/json
 # Delete a blog by id
 
 DELETE http://localhost:{{PORT}}/api/blogs/{{ID}}
+
+### 
+# PUT a blog update
+PUT http://localhost:{{PORT}}/api/blogs/{{ID}}
+Content-Type: application/json
+
+{
+	"title": "Postataan taas 223",
+	//"author": "Teppo Testaaja",
+	//"url": "www.google.com",
+	"likes": 6
+}

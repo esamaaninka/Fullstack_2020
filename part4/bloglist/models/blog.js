@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 
-// siirrä ensin requestit controller moduuliin, sen jälkeen ota tämä models/blog.js
-// käyttöön
 
 const blogSchema = mongoose.Schema({
     title: {

@@ -81,18 +81,63 @@ describe('blogs in test database', () => {
   })
 
   test('POST blog without title or url returns 400 Bad Request', async() => {
-    const newBlog = {
+    const newBlogNoTitle = {
       //title: 'Post a new blog without like field',
-      // jos post async-await blog schema validation kanssa ei toimi, jää "jumiin"
       author: 'blog-api -tesdriver', 
       url: 'www.theurl.com'
     }
-    const response = await api
+    const newBlogNoUrl = {
+      title: 'Post a new blog without like field',
+      author: 'blog-api -tesdriver'
+    }
+    let response = await api
       .post('/api/blogs')
-      .send(newBlog)
+      .send(newBlogNoTitle)
+      .expect(400)
+
+    response = await api
+      .post('/api/blogs')
+      .send(newBlogNoUrl)
       .expect(400)
 
     })
+
+  test('DELETE a blog using id success', async() => {
+    // delete the first api-blogs-helper set blog
+    const blogsAtStart = await helper.blogsInDb()
+      //console.log('blogsAtStart', blogsAtStart)
+    //expect(blogsAtStart[0].id).toBeDefined()
+
+    await api
+      .delete(`/api/blogs/${blogsAtStart[0].id}`)
+      .expect(204)
+
+  })
+
+  test('PUT update blog title and likes fields', async () => {
+    
+    const blogsAtStart = await helper.blogsInDb()
+
+    const updatedBlog = {
+      //original title: 'Surfing the net is interesting',
+      title: 'Surfing the www is interesting',
+      //author: 'Jaska Jokunen', 
+      //url: 'www.yle.fi',
+      //original likes: 1
+      likes: blogsAtStart[1].likes +1
+    }
+
+    const result = await api
+      .put((`/api/blogs/${blogsAtStart[1].id}`))
+      .send(updatedBlog)
+      .expect(200)
+    //console.log('result:', result.body)
+    expect(result.body.likes).toBe(2)
+
+    const blogsAfterPost = await helper.blogsInDb()
+    expect(blogsAfterPost[1].title).toEqual(updatedBlog.title)
+  })
+
 
 }) // end of describe('blogs in test database'...
 
