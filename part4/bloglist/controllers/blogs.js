@@ -37,7 +37,7 @@ blogRouter.get('/api/blogs', (request, response, next) => {
         })
         .catch(error => next(error))
   })
-  /*
+  
   blogRouter.post('/api/blogs', (request, response, next) => {
     const blog = new Blog(request.body)
     // yo tekee saman
@@ -55,13 +55,13 @@ blogRouter.get('/api/blogs', (request, response, next) => {
       })
       .catch(error => next(error))
   })
-*/
+/* Tämä async-await ei toimi blog schema validation kanssa jos halutaan että MW/ErrorHandler palauttaa halutun virheen ValidationError yhteydessä? 
   blogRouter.post('/api/blogs', async (request, response) => {
     const blog = new Blog(request.body)
     
     const savedBlog = await blog.save()
     response.status(201).json(savedBlog)
   })
-
+*/
 
   module.exports = blogRouter

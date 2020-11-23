@@ -80,6 +80,19 @@ describe('blogs in test database', () => {
     expect(blogsAfterPost[2].likes).toBe(0)
   })
 
+  test('POST blog without title or url returns 400 Bad Request', async() => {
+    const newBlog = {
+      //title: 'Post a new blog without like field',
+      // jos post async-await blog schema validation kanssa ei toimi, jää "jumiin"
+      author: 'blog-api -tesdriver', 
+      url: 'www.theurl.com'
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    })
 
 }) // end of describe('blogs in test database'...
 
