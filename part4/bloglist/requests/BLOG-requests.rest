@@ -17,8 +17,8 @@ POST http://localhost:{{PORT}}/api/blogs/
 Content-Type: application/json
 
 {
-		"title": "Postataan taas 222",
-  		"author": "Teppo Testaaja",
+		"title": "Blogistani pohdintaa 4",
+  		"author": "Panu Blokaaja",
   		"url": "www.google.com"
 }
 
@@ -47,7 +47,7 @@ POST http://localhost:{{PORT}}/api/users
 Content-Type: application/json
 
 {
-	"username": "teppo4",
-	"name": "Teppo Testaaja",
+	"username": "Joppe",
+	"name": "Joni Pelaaja",
 	"password": "salasana"
 }

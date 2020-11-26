@@ -1,9 +1,13 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/users')
+const Blog = require('../models/blog')
 
 usersRouter.get('/api/users', async (request, response) => {
-  const users = await User.find({})
+  const users = await User
+    .find({})
+    .populate('blogs', { title: 1, author:1, id: 1 })
+
   response.json(users)
 })
 
@@ -26,7 +30,7 @@ usersRouter.post('/api/users', async (request, response, next) => {
   })
 
   // tämä ei toimi mongoose validator error kanssa, jää "jumiin"
-  //  const savedUser = await user.save() 
+  //  const savedUser = await user.save()
   //  response.json(savedUser)
   user.save()
     .then(result => {
