@@ -1,27 +1,22 @@
 module.exports = {
-  'env': {
-    'commonjs': true,
-    'es6': true,
-    'node': true,
-    'jest': true
-  },
-  'extends': 'eslint:recommended',
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly'
-  },
-  'parserOptions': {
-    'ecmaVersion': 11
-  },
-  'rules': {
-    'indent': [
-        'error',
-      2
-    ],
-      //'linebreak-style': [
-        //    'error',
-        //    'windows'
-        //],
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        'indent': [
+            'error',
+            2
+        ],
+        'linebreak-style': [
+            'error',
+            'windows'
+        ],
         'quotes': [
             'error',
             'single'
@@ -37,6 +32,7 @@ module.exports = {
         ],
         'arrow-spacing': [
             'error', { 'before': true, 'after': true }
-        ]
+        ],
+        'no-console': 0,
     }
-}
+};

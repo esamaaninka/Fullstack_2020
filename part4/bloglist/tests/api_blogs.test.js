@@ -184,7 +184,7 @@ describe('when there is initially one user in db', () => {
     const newUser = {
       username: 'root',
       name: 'Superuser',
-      password: 'salainen',        
+      password: 'salainen',
     }
 
     const result = await api
@@ -198,7 +198,40 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd.length).toBe(usersAtStart.length)
   })
-})
+
+  test('user creation fails with too short username', async () => {
+    const newUser = {
+      username: 'as',
+      name: 'Too Short Username',
+      password: 'salainen',
+    }
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('User validation failed: username: Path `username` (`as`) is shorter than the minimum allowed length (3)')
+
+  })
+
+  test('user creation fails with too short password', async () => {
+    const newUser = {
+      username: 'astarte',
+      name: 'Too Short Password',
+      password: 'sa',
+    }
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('password too short, min lenght of 3 required')
+
+  })
+
+}) //  end of describe
 
 afterAll(() => {
   mongoose.connection.close()
