@@ -4,6 +4,7 @@
 # GET all blogs
 GET http://localhost:{{PORT}}/api/blogs
 
+
 ###
 # GET by ID 
 # copy paste blog id to the ID variable
@@ -36,4 +37,17 @@ Content-Type: application/json
 	//"author": "Teppo Testaaja",
 	//"url": "www.google.com",
 	"likes": 6
+}
+
+### USER 
+GET http://localhost:{{PORT}}/api/users
+
+### POST
+POST http://localhost:{{PORT}}/api/users
+Content-Type: application/json
+
+{
+	"username": "teppo4",
+	"name": "Teppo Testaaja",
+	"password": "salasana"
 }

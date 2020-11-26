@@ -7,6 +7,11 @@ const blogSchema = mongoose.Schema({
       required: true
     },
     author: String,
+    // linkitä author/user blog kuten notes esimerksisäs
+    //user: {
+    //  type: mongoose.Schema.Types.ObjectId,
+    //  ref: 'User'
+    //}
     url: {
       type: String,
       required: true

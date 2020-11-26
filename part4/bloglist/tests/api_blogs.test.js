@@ -1,8 +1,10 @@
+const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./api_blogs_helper')
-const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/users')
+const app = require('../app')
 
 const api = supertest(app)
 
@@ -21,12 +23,7 @@ describe('blogs in test database', () => {
     const response = await api
       .get('/api/blogs')
       .expect(200)
-      .expect('Content-Type', /application\/json/)
-      
-
-      //console.log('Headers: ',response.headers)
-      //console.log('Id: ', response.body[0])
-    
+      .expect('Content-Type', /application\/json/)  
   })
 
   test('testdb contains correct amount of blogs', async () => {
@@ -141,7 +138,67 @@ describe('blogs in test database', () => {
 
 }) // end of describe('blogs in test database'...
 
+/////////////////////////////// USER TESTS //////////////////////////////////////////////////////////
 
+describe('when there is initially one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  // joku bugi jossain, jos nämä User -testit omassa tiedostossaan, liittyykö tuohon promiseAll jos puuttuu ? 
+  // jos ajan kaikki testit "npm test" kaikki ok, mutta jos yritän ajaa näitä alla yksittäin
+  // "npm test -- -t 'creation succeeds with a fresh username'"" tulee virhettä 
+  // "ReferenceError: You are trying to `import` a file after the Jest environment has been torn down."
+
+
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'teppo',
+      name: 'Teppo Testaaja',
+      password: 'salasana',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    expect(usernames).toContain(newUser.username)
+  })
+
+  test('creation fails with proper statuscode and message if username already taken', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'root',
+      name: 'Superuser',
+      password: 'salainen',        
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('`username` to be unique')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
+  })
+})
 
 afterAll(() => {
   mongoose.connection.close()
