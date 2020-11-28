@@ -13,22 +13,7 @@ const getTokenFrom = request => {
   return null
 }
 
-/*
-blogRouter.get('/api/blogs', (request, response, next) => {
-    Blog
-      .find({})
-      .then(blogs => {
-        //response.json(blogs)
-        if(blogs){
-          response.json(blogs.map(b => b.toJSON()))
-        } else {
-          response.status(404).end()
-        }
-      })
-      .catch(error => next(error))
-  }) */
 
-// changed the promise -version to async-await
 blogRouter.get('/api/blogs/', async (request, response) => {
   const blogs = await Blog
     .find({})
@@ -38,12 +23,9 @@ blogRouter.get('/api/blogs/', async (request, response) => {
 })
 
 blogRouter.get('/api/blogs/:id', (request, response, next) => {
-  //console.log('/api/blogs/:id', request.params.id)
   Blog
-    //.findOne({id: `${id}`})
     .findById(request.params.id)
     .then(blog => {
-      //console.log('blog:', blog)
       if(blog){
         response.json(blog.toJSON())
       } else {
@@ -72,16 +54,8 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
     user: user.id
   })
 
-  console.log('Blogia: ', blog)
-  console.log('Useri ', user)
-
-  /*  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-    .catch(error => next(error))
-    */
+  //console.log('Blogia: ', blog)
+  //console.log('Useri ', user)
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()

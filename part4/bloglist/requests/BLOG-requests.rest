@@ -1,9 +1,11 @@
 @PORT=3009
 
 // copy-paste the token from the login response
-@AUTHTOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvcHBlIiwiaWQiOiI1ZmJmZjI0MDRkYmY3YzM4YzAyNWJmMDkiLCJpYXQiOjE2MDY1NTE3ODl9.7JyI00cZyDayjd63_niC3STA2HwPVJ8CMKyDx0Hr9NE
+//@AUTHTOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvcHBlIiwiaWQiOiI1ZmJmZjI0MDRkYmY3YzM4YzAyNWJmMDkiLCJpYXQiOjE2MDY1NTE3ODl9.7JyI00cZyDayjd63_niC3STA2HwPVJ8CMKyDx0Hr9NE
 ################################
 
+// saves the token from the response
+# @name gotToken
 POST http://localhost:{{PORT}}/api/login
 Content-Type: application/json
 
@@ -19,7 +21,7 @@ GET http://localhost:{{PORT}}/api/blogs
 
 ###
 # GET by ID 
-# copy paste blog id to the ID variable
+# copy paste a blog id to the ID variable
 @ID = 5fbbb59f948eaa52d04d38e0
 GET http://localhost:{{PORT}}/api/blogs/{{ID}}
 
@@ -27,10 +29,10 @@ GET http://localhost:{{PORT}}/api/blogs/{{ID}}
 # POST A NEW BLOG ITEM
 POST http://localhost:{{PORT}}/api/blogs/
 Content-Type: application/json
-Authorization: bearer {{AUTHTOKEN}}
+Authorization: bearer {{gotToken.response.body.token}}
 
 {
-		"title": "Blogitallennus vain tunnistetulle 2",
+		"title": "Blogitallennus vain tunnistetulle 4",
   		"author": "Panu Blokaaja",
   		"url": "www.google.com"
 }
