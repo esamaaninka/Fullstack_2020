@@ -1,6 +1,17 @@
+const jwt = require('jsonwebtoken')
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/users')
+
+// strip the token from the request
+//
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
 
 /*
 blogRouter.get('/api/blogs', (request, response, next) => {
@@ -44,10 +55,15 @@ blogRouter.get('/api/blogs/:id', (request, response, next) => {
 
 blogRouter.post('/api/blogs', async (request, response, next) => {
 
-  const user = await User.findOne({}) // otetaan satunnainen käyttäjä kannasta
+  //const user = await User.findOne({}) // otetaan satunnainen käyttäjä kannasta
 
-  //const blog = new Blog(request.body)
-  // yo tekee saman
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+
   const blog = new Blog({
     title: request.body.title,
     author: request.body.author,
