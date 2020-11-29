@@ -10,7 +10,7 @@ POST http://localhost:{{PORT}}/api/login
 Content-Type: application/json
 
 {
-	"username": "Joppe",
+	"username": "Jaska",
 	"password": "salasana"
 }
 
@@ -32,8 +32,8 @@ Content-Type: application/json
 Authorization: bearer {{gotToken.response.body.token}}
 
 {
-		"title": "Blogitallennus vain tunnistetulle 4",
-  		"author": "Panu Blokaaja",
+		"title": "Blogitallennus Jaskalle 3",
+  		"author": "Jaska Blokaaja",
   		"url": "www.google.com"
 }
 
@@ -62,7 +62,7 @@ POST http://localhost:{{PORT}}/api/users
 Content-Type: application/json
 
 {
-	"username": "Joppe",
-	"name": "Joni Pelaaja",
+	"username": "Jaska",
+	"name": "Jaska Blogaaja",
 	"password": "salasana"
 }
