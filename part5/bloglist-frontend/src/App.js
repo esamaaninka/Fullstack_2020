@@ -18,6 +18,14 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, []) // to get logged in user data first time when app opened. User logged in until logout.
   
 
   const handleLogin = async (event) => {
@@ -28,6 +36,11 @@ const App = () => {
         username, password,
       })
       console.log('After login user: ', user)
+
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+
       setUser(user)
       setUsername('')
       setPassword('')
@@ -39,6 +52,12 @@ const App = () => {
     }
   }
 
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+    setUsername('')
+    setPassword('')
+  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -121,6 +140,7 @@ const App = () => {
       <div>
         <h2>Blogs</h2>
         <p>{user.name} is logged in</p>
+        <button onClick={() => handleLogout()}> Logout </button>
         <ul>
           {blogs.map(blog => 
             <Blog key={blog.id} blog={blog} /> 
