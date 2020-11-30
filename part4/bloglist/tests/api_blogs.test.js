@@ -97,12 +97,12 @@ describe('blogs in test database', () => {
       .send(newBlogNoUrl)
       .expect(400)
 
-    })
+  })
 
   test('DELETE a blog using id success', async() => {
     // delete the first api-blogs-helper set blog
     const blogsAtStart = await helper.blogsInDb()
-      //console.log('blogsAtStart', blogsAtStart)
+    //console.log('blogsAtStart', blogsAtStart)
     //expect(blogsAtStart[0].id).toBeDefined()
 
     await api
@@ -112,13 +112,13 @@ describe('blogs in test database', () => {
   })
 
   test('PUT update blog title and likes fields', async () => {
-    
+
     const blogsAtStart = await helper.blogsInDb()
 
     const updatedBlog = {
       //original title: 'Surfing the net is interesting',
       title: 'Surfing the www is interesting',
-      //author: 'Jaska Jokunen', 
+      //author: 'Jaska Jokunen',
       //url: 'www.yle.fi',
       //original likes: 1
       likes: blogsAtStart[1].likes +1

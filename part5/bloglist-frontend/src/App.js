@@ -25,12 +25,12 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  }, []) // to get logged in user data first time when app opened. User logged in until logout.
+  }, []) // to get prev. logged in user data first time when app opened. User logged in until logout.
   
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('logging in with', username, password)
+    //console.log('logging in with', username, password)
     try {
       const user = await loginService.login({
         username, password,
@@ -57,58 +57,75 @@ const App = () => {
     setUser(null)
     setUsername('')
     setPassword('')
+    // nullify token ?
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        <h2>log in to application</h2>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
-/*
+  
+
   const blogForm = () => (
     <form onSubmit={addBlog}>
-      <input
-        value={newBlog}
+      <div> title:
+      <input 
+        value={newBlog.title || ''} // "...|| '')" to get rid of "Warning: A component is changing an uncontrolled input of type text to be controlled. Input elements should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled input element for the lifetime of the component.*"
+        name="title"
         onChange={handleBlogChange}
       />
-      <button type="submit">new Blog</button>
+      </div>
+      <div> author:
+       <input
+        value={newBlog.author || ''}
+        name="author"
+        onChange={handleBlogChange}
+      />
+      </div>
+      <div> url:
+       <input
+        value={newBlog.url || ''}
+        name="url"
+        onChange={handleBlogChange}
+      />
+      </div>
+      
+      <button type="submit">Create</button>
     </form>  
   )
+  const handleBlogChange = (event) => {
+    //console.log('handleblogchange updating: ', event.target.value)
+    setNewBlog({
+      ...newBlog,
+      [event.target.name]: event.target.value
+    })
+  }
 
-    const addBlog = (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
-    console.log('addBlog called', event)
+    //console.log('addBlog called', newBlog)
+
+    const blogObject = {
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url 
+    }
+    console.log('attempt to send blog: ', blogObject)
+    blogService.create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewBlog('')
+      })
+    
+    
   }
 
-    const handleBlogChange = (event) => {
-    setNewBlog(event.target.value)
-  }
+  
+  
 
-*/
+
 
   if(user === null)  {
     return (
       <div>
         <Notification message={errorMessage} />
+ 
         <h2>Log in to the application</h2>
       
         <form onSubmit={handleLogin}>
@@ -141,6 +158,8 @@ const App = () => {
         <h2>Blogs</h2>
         <p>{user.name} is logged in</p>
         <button onClick={() => handleLogout()}> Logout </button>
+        <p></p>
+        {blogForm()}
         <ul>
           {blogs.map(blog => 
             <Blog key={blog.id} blog={blog} /> 
