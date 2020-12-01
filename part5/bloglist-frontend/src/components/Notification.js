@@ -35,7 +35,7 @@ const messageStyle = {
   }
   
   const Notification = ({message, errorFlag}) => {
-    console.log('Notification: ', message, errorFlag)
+    //console.log('Notification: ', message, errorFlag)
     if(!message) return null 
     else return(
       <div style={errorFlag === false ? messageStyle : errorStyle}>
