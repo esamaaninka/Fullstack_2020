@@ -3,7 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import blogForm from './components/BlogForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -37,7 +38,6 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      //console.log('After login user: ', user)
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
@@ -62,10 +62,23 @@ const App = () => {
     // nullify token ?
   }
 
+  const addBlog = (blogObject) => {
+    blogService.create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        //setNewBlog('')
+    })
+    
+  }
+    
+  
   
 
-  
-  
+  const blogForm = () => (
+    <Togglable buttonLabel='new blog'> 
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
+  )
   
 
 
