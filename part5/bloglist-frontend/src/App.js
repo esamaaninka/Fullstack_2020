@@ -12,8 +12,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
-  //const [blogFormVisible, setBlogFormVisible] =useState(false)
-  //const [newBlog, setNewBlog] = useState('')
+  
+  const blogFormRef = React.createRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -63,6 +63,7 @@ const App = () => {
   }
 
   const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility() 
     blogService.create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
@@ -75,7 +76,7 @@ const App = () => {
   
 
   const blogForm = () => (
-    <Togglable buttonLabel='new blog'> 
+    <Togglable buttonLabel='new blog' ref={blogFormRef}> 
       <BlogForm createBlog={addBlog} />
     </Togglable>
   )
