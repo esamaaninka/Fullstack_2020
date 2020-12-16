@@ -39,7 +39,7 @@ const Notification = ({ message, errorFlag }) => {
   if(!message) return null
 
   else return(
-    <div style={errorFlag === false ? messageStyle : errorStyle}>
+    <div className="error" style={errorFlag === false ? messageStyle : errorStyle}>
       {message}
     </div>
   )
