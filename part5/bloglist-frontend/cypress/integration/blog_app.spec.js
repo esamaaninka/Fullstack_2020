@@ -37,7 +37,29 @@ describe('Blog app', function() {
 
       cy.get('.error').contains('Wrong credentials')
       cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
+
       cy.get('html').should('not.contain', 'Jaakko Blogaaja is logged in')
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'Jape', password: 'salasana' })
+      cy.createBlog({
+        title: 'another blog created by cypress',
+        author: 'Cypress',
+        url: 'https://cypress.io'
+      })
+    })
+
+    it('a new blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('a blog created by cypress')
+      cy.get('#author').type('Jape Blogaaja')
+      cy.get('#url').type('https://www.blogs.com')
+      cy.get('#create-button').click()
+
+      cy.contains('a blog created by cypress')
     })
   })
 })
