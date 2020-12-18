@@ -61,7 +61,7 @@ const App = () => {
     // nullify token ?
   }
 
-  const addBlog = (blogObject) => {
+  const createBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService.create(blogObject)
       .then(returnedBlog => {
@@ -70,9 +70,24 @@ const App = () => {
       })
   }
 
+  const likeBlog = (blogObject) => {
+    console.log('App.js likeBlog: ', blogObject)
+    blogService
+      .update(blogObject.id, blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(b => b.id !== blogObject.id ? b : returnedBlog))
+      })
+      .catch(() => {
+        setErrorMessage('error in liking the blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
+      <BlogForm createBlog={createBlog} />
     </Togglable>
   )
 
@@ -119,7 +134,7 @@ const App = () => {
       {blogForm()}
       <ul>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
         )}
       </ul>
     </div>
