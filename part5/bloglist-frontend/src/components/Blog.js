@@ -33,7 +33,7 @@ const Blog = ({ blog, likeBlog }) => {
         <li>{blog.title}</li> 
         <li>{blog.author} </li>
         <li>{blog.likes} {' '}
-          <button label="Like" onClick={handleBlogLiked}>Like</button>
+          <button id="like-button" label="Like" onClick={handleBlogLiked}>Like</button>
         </li>
       </ul>
     </div>

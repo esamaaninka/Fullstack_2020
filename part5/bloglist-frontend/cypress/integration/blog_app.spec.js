@@ -61,5 +61,15 @@ describe('Blog app', function() {
 
       cy.contains('a blog created by cypress')
     })
+
+    it('a blog can be liked', function() {
+      cy.contains('another blog created by cypress')
+        .parent()
+        .find('button')
+        .click()
+
+      cy.contains('1')
+
+    })
   })
 })
