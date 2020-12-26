@@ -9,7 +9,14 @@ describe('Blog app', function() {
       name: 'Jaakko Blogaaja',
       password: 'salasana'
     }
+    const user2 = {
+      username: 'Jaska',
+      name: 'Jaakko Blogisti',
+      password: 'salasana'
+    }
     cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', 'http://localhost:3001/api/users/', user2)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -64,12 +71,34 @@ describe('Blog app', function() {
 
     it('a blog can be liked', function() {
       cy.contains('another blog created by cypress')
-        .parent()
-        .find('button')
-        .click()
+      cy.get('#like-button').click()
 
       cy.contains('1')
 
+    })
+    it('a biog can be removed by author only', function () {
+      // Jape logged in and created blog. logout first and try to
+      // remove as other user
+      cy.contains('Logout').click()
+
+      cy.get('#username').type('Jaska')
+      cy.get('#password').type('salasana')
+      cy.get('#login-button').click()
+
+      cy.get('#delete-button').click()
+
+      cy.contains('another blog created by cypress')
+      // how to get the error to UI? 
+      //cy.get('.error').contains('Not allowed')
+
+    })
+
+    it('a blog can be removed by author', function() {
+
+      cy.contains('another blog created by cypress')
+      cy.get('#delete-button').click()
+
+      cy.get('html').should('not.contain', 'another blog created by cypress')
     })
   })
 })

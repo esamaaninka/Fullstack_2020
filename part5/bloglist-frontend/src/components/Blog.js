@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Blog = ({ blog, likeBlog }) => {
+const Blog = ({ blog, likeBlog, removeBlog }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,9 +16,22 @@ const Blog = ({ blog, likeBlog }) => {
 
   const handleBlogLiked = (event) => {
     event.preventDefault()
-    console.log('Blog.js handleBlogLiked',blog)
+    //console.log('Blog.js handleBlogLiked',blog)
     likeBlog({
       title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      id: blog.id,
+      likes: blog.likes+1,
+      user: blog.user.id
+    })
+  }
+
+  const handleBlogRemove = (event) => {
+    event.preventDefault()
+    //console.log('Blog.js handelBlogRemove', blog.id)
+    removeBlog({
+      title:blog.title,
       author: blog.author,
       url: blog.url,
       id: blog.id,
@@ -34,6 +47,7 @@ const Blog = ({ blog, likeBlog }) => {
         <li>{blog.author} </li>
         <li>{blog.likes} {' '}
           <button id="like-button" label="Like" onClick={handleBlogLiked}>Like</button>
+          <button id="delete-button" label="Remove" onClick={handleBlogRemove}>Remove</button>
         </li>
       </ul>
     </div>

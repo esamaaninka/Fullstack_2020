@@ -15,7 +15,7 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    console.log('attempt to send blog: ', newBlog)
+    //console.log('attempt to send blog: ', newBlog)
     createBlog({
       title: newBlog.title,
       author: newBlog.author,

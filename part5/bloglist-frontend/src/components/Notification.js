@@ -35,7 +35,6 @@ const errorStyle = {
 }
 
 const Notification = ({ message, errorFlag }) => {
-  //console.log('Notification: ', message, errorFlag)
   if(!message) return null
 
   else return(

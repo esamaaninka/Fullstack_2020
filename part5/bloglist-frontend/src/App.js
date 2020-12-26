@@ -41,6 +41,7 @@ const App = () => {
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
+      blogService.setToken(user.token)
 
       setUser(user)
       setUsername('')
@@ -58,7 +59,7 @@ const App = () => {
     setUser(null)
     setUsername('')
     setPassword('')
-    // nullify token ?
+    blogService.setToken(null)
   }
 
   const createBlog = (blogObject) => {
@@ -77,8 +78,42 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.map(b => b.id !== blogObject.id ? b : returnedBlog))
       })
-      .catch(() => {
+      .catch(() => { // why not catching err ?
         setErrorMessage('error in liking the blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
+  }
+
+  const removeBlog = async (blogObject) => {
+    /*
+    //console.log('App.js removeBlog id: ', blogObject)
+
+    try {
+      await blogService.remove(blogObject.id)
+
+      setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+
+    } catch (error)  {
+      //debugger
+
+      console.log("catched error in removeBlog", error.response.data)
+      setErrorMessage(error.response.data)
+      setTimeout(() => { // no error message window, how to render ?
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+  */
+    blogService
+      .remove(blogObject.id)
+      .then( response => {
+        setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+      })
+      .catch ((error) => {
+        console.log(error.response.data)
+        setErrorMessage(error.response.data) // no error message window ?
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -134,7 +169,7 @@ const App = () => {
       {blogForm()}
       <ul>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
+          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog}/>
         )}
       </ul>
     </div>

@@ -1,5 +1,8 @@
 muistilistaa:
 
+open issues:
+- error message windows not shown in removeBlog, likeBlog error cases 
+
 Cypress:
 käynnistä 
 backend: 'npm run start:test'
