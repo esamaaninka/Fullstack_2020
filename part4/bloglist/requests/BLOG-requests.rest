@@ -1,4 +1,4 @@
-@PORT=3009
+@PORT=3001
 
 // copy-paste the token from the login response
 //@AUTHTOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvcHBlIiwiaWQiOiI1ZmJmZjI0MDRkYmY3YzM4YzAyNWJmMDkiLCJpYXQiOjE2MDY1NTE3ODl9.7JyI00cZyDayjd63_niC3STA2HwPVJ8CMKyDx0Hr9NE
@@ -11,7 +11,7 @@ POST http://localhost:{{PORT}}/api/login
 Content-Type: application/json
 
 {
-	"username": "Jaska",
+	"username": "Jape",
 	"password": "salasana"
 }
 
@@ -33,7 +33,7 @@ Content-Type: application/json
 Authorization: bearer {{gotToken.response.body.token}}
 
 {
-		//"title": "Blogitallennus Jaskalle 3",
+		"title": "Blogitallennus Jaskalle 5",
   		"author": "Jaska Blokaaja",
   		"url": "www.google.com"
 }
@@ -49,21 +49,22 @@ PUT http://localhost:{{PORT}}/api/blogs/{{ID}}
 Content-Type: application/json
 
 {
-	"title": "Postataan taas 223",
-	//"author": "Teppo Testaaja",
-	//"url": "www.google.com",
-	"likes": 6
+	"title": "testiblogi",
+	"author": "Teppo Testaaja",
+	"url": "www.google.com",
+	"likes": 1
 }
 
 ### USER 
 GET http://localhost:{{PORT}}/api/users
 
+### Create a user
 ### POST
 POST http://localhost:{{PORT}}/api/users
 Content-Type: application/json
 
 {
-	"username": "Jaska",
-	"name": "Jaska Blogaaja",
+	"username": "Jope",
+	"name": "Jonne Blogisti",
 	"password": "salasana"
 }

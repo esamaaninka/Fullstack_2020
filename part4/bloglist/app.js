@@ -1,5 +1,6 @@
 const express = require('express')
-const app = express()
+var bodyParser = require('body-parser')
+
 const cors = require('cors')
 const blogRouter = require('./controllers/blogs')
 const userRouter = require('./controllers/users')
@@ -7,6 +8,14 @@ const loginRouter = require('./controllers/login')
 const config = require('./utils/config')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
+
+const app = express()
+app.use(bodyParser.json())
+
+if ( config.TEST_MODE === 'test') {  
+  const testingRouter = require('./controllers/testing')  
+  app.use('/api/testing', testingRouter)
+}
 
 const mongoose = require('mongoose')
 

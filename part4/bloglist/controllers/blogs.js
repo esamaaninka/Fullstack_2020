@@ -37,14 +37,12 @@ blogRouter.get('/api/blogs/:id', (request, response, next) => {
 
 blogRouter.post('/api/blogs', async (request, response, next) => {
 
-  //const user = await User.findOne({}) // otetaan satunnainen käyttäjä kannasta
-
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById({_id: decodedToken.id})
 
   const blog = new Blog({
     title: request.body.title,
@@ -54,8 +52,6 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
     user: user.id
   })
 
-  //console.log('Blogia: ', blog)
-  //console.log('Useri ', user)
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
@@ -64,20 +60,33 @@ blogRouter.post('/api/blogs', async (request, response, next) => {
 
 })
 
-/* Tämä async-await ei toimi blog schema validation kanssa jos halutaan että MiddleWare/ErrorHandler palauttaa halutun virheen ValidationError yhteydessä? 
-
-  blogRouter.post('/api/blogs', async (request, response) => {
-    const blog = new Blog(request.body)
-
-    const savedBlog = await blog.save()
-    response.status(201).json(savedBlog)
-  })
-*/
 
 blogRouter.delete('/api/blogs/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
 
-  response.status(204).end()
+  const blogToDelete = await Blog.findById(request.params.id)
+  const blogCreator = blogToDelete.user
+  const deleteRequestor = await User.findById(decodedToken.id)
+
+  if(deleteRequestor._id.toString() !== blogCreator._id.toString()) {
+    response.status(401).json({ error: 'Not allowed: Delete attempt by not creator' })
+  }
+  else {
+    await Blog.findByIdAndRemove({ _id: request.params.id })
+
+    await User.findOneAndUpdate(
+      { _id: decodedToken.id },
+      {  $pull: {
+        'blogs': request.params.id
+      }
+      }
+    )
+    response.status(200).end()
+  }
 })
 
 blogRouter.put('/api/blogs/:id', async (request, response) => {
