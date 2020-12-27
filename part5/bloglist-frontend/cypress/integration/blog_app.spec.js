@@ -55,7 +55,8 @@ describe('Blog app', function() {
       cy.createBlog({
         title: 'another blog created by cypress',
         author: 'Cypress',
-        url: 'https://cypress.io'
+        url: 'https://cypress.io',
+        likes: 0
       })
     })
 
@@ -100,5 +101,34 @@ describe('Blog app', function() {
 
       cy.get('html').should('not.contain', 'another blog created by cypress')
     })
+
+    it('blogs arranged in popularity order', function() {
+      // create first some blogs
+      cy.createBlog({
+        title: 'a blog created by cypress',
+        author: 'Cypress',
+        url: 'https://cypress.io',
+        likes: 10
+      })
+
+      cy.createBlog({
+        title: 'third blog created by cypress',
+        author: 'Cypress',
+        url: 'https://cypress.io',
+        likes: 5
+      })
+      
+      
+      cy.contains('another blog created by cypress')
+      cy.contains('third blog created by cypress')
+      
+      // check the order is correct
+      cy.get('.blogList').then(blogs => {
+        cy.wrap(blogs[0]).contains(10)
+        cy.wrap(blogs[1]).contains(5)
+        cy.wrap(blogs[2]).contains(0)
+      })
+
+    }) 
   })
 })

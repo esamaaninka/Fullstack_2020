@@ -161,14 +161,16 @@ const App = () => {
     )}
 
   return (
-    <div>
+    <div className='blogList'>
       <h2>Blogs</h2>
       <p>{user.name} is logged in</p>
       <button onClick={() => handleLogout()}> Logout </button>
       <p></p>
       {blogForm()}
       <ul>
-        {blogs.map(blog =>
+        {blogs
+          .sort((a,b) => (a.likes < b.likes ? 1 : -1)) 
+          .map(blog =>
           <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog}/>
         )}
       </ul>

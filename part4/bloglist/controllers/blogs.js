@@ -17,6 +17,7 @@ const getTokenFrom = request => {
 blogRouter.get('/api/blogs/', async (request, response) => {
   const blogs = await Blog
     .find({})
+    .sort({'likes': 'descending'})
     .populate('user', { username: 1, name: 1, id: 1 })
 
   response.json(blogs)
