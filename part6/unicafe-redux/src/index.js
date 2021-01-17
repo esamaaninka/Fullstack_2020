@@ -23,7 +23,7 @@ const Statistics = () => {
   let positive=stats.good/votes*100 +' %'
   let average=(stats.good - stats.bad)/votes
 
-  console.log('Votes', votes, 'Average', average, 'Positive', positive)
+  //console.log('Votes', votes, 'Average', average, 'Positive', positive)
             
   if(votes===0) {
       return( 
