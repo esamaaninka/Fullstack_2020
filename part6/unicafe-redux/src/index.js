@@ -38,9 +38,9 @@ const Statistics = () => {
       <h1>statistics</h1>
       <table>
         <tbody>
-          <Statistic text="good" value ={store.good} />
-          <Statistic text="neutral" value ={store.neutral} />
-          <Statistic text="bad" value ={store.bad} />
+          <Statistic text="good" value ={stats.good} />
+          <Statistic text="neutral" value ={stats.ok} />
+          <Statistic text="bad" value ={stats.bad} />
           <Statistic text="all" value ={votes} />
           <Statistic text="average" value ={average} />
           <Statistic text="positive" value ={positive} />
