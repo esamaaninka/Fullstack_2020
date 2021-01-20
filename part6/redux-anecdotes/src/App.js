@@ -1,13 +1,13 @@
 import React from 'react'
 import Anectodes from './components/Anectodes'
-import NewAnecdote from './components/NewAnecdote'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
   return (
     <div>
       <Anectodes />
-      <NewAnecdote />
-      </div>
+      <AnecdoteForm />
+    </div>
   )
 }
 
