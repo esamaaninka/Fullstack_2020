@@ -25,7 +25,7 @@ const reducer = (state = initialState, action) => {
 
   switch(action.type) {
     case 'NEW_ANECDOTE':
-      console.log('switch new_anectode')
+      //console.log('switch new_anectode')
       return [...state, action.data]
     case 'VOTE':
       const id = action.data.id
@@ -42,7 +42,7 @@ const reducer = (state = initialState, action) => {
 }
 
 export const newAnecdote = (content) => {
-  debugger
+  //debugger
   console.log('creating new Anectode: ', content)
   return {
     type: 'NEW_ANECDOTE',

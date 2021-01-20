@@ -9,7 +9,7 @@ const NewAnecdote = (props) => {
     console.log('NewAnecdote: ', event.target.anecdote.value)
     event.preventDefault()
     const content = event.target.anecdote.value
-    event.target.note.value = ''
+    event.target.anecdote.value = ''
     dispatch(newAnecdote(content))
   }
 
@@ -21,4 +21,4 @@ const NewAnecdote = (props) => {
   )
 }
 
-export default newAnecdote
+export default NewAnecdote
