@@ -1,8 +1,6 @@
 
 
-const notificationReducer = (state = 'TEST', action) => {
-    console.log('notificationReducer got: ',state)
-    //console.log('notificationReducer msg_ ', action.notification)
+const notificationReducer = (state = '', action) => {
     switch (action.type) {
         case 'SHOW_NOTIFICATION':
             return action.content
@@ -16,12 +14,17 @@ const notificationReducer = (state = 'TEST', action) => {
 var timer =  null
 
 export const showNotification = (notification) => {
-    console.log('Notification reducer showNotification: ', notification)
     
-    return {
+   return async dispatch => {
+    dispatch({
       type: 'SHOW_NOTIFICATION',
       content: notification
-   }
-    }
+    })
+    clearTimeout(timer)
+    timer = window.setTimeout(()=>{
+      dispatch({type: 'HIDE_NOTIFICATION'})
+    }, 5*1000)   
+  }
+}
         
 export default notificationReducer
