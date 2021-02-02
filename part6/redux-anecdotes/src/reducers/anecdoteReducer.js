@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes'
+/* 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,14 +21,26 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
-  console.log('state before acion: ', state)
-  console.log('action', action)
+
+export const asObject = (anecdote) => {
+  return {
+    content: anecdote,
+    //id: getId(),
+    votes: 0
+  }
+}
+*/
+//const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
+
+  //console.log('state before acion: ', state)
+  //console.log('action', action)
 
   switch(action.type) {
     case 'NEW_ANECDOTE':
       //console.log('switch new_anectode')
       return [...state, action.data]
+    
     case 'VOTE':
       const id = action.data.id
       const anecdoteToChange = state.find(n => n.id === id)
@@ -36,6 +50,9 @@ const reducer = (state = initialState, action) => {
       }
       return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote) 
     
+    case 'INIT_ANECDOTES':
+      return action.data
+    
     default: 
       return state
   }
@@ -43,22 +60,33 @@ const reducer = (state = initialState, action) => {
 
 export const newAnecdote = (content) => {
   //debugger
-  console.log('creating new Anectode: ', content)
-  return {
-    type: 'NEW_ANECDOTE',
-    data: {
-      content,
-      votes: 0,
-      id: getId()
-    }
+  //console.log('creating new Anectode: ', content)
+  return async dispatch => {
+    const savedAnecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: savedAnecdote 
+    //{
+    //  savedAnecdote,
+    //  votes: 0
+     // id: getId()
+    //}
+    })
   }
 }
 
 export const voteAnecdote = (id) => {
-  console.log('Voting id:', id)
+  //console.log('Voting id:', id)
   return {
     type: 'VOTE',
     data: { id }
+  }
+}
+
+export const initAnecdotes = (anecdotes) => {
+  return {
+    type: 'INIT_ANECDOTES',
+    data: anecdotes
   }
 }
 

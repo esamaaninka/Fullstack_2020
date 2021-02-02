@@ -8,7 +8,7 @@ const Filter = () => {
 
   const handleChange = (event) => {
     // input-field value is in variable event.target.value
-    console.log('Filter component handleChange got: ', event.target.value)
+    //console.log('Filter component handleChange got: ', event.target.value)
     dispatch(setFilter(event.target.value))
   }
   const style = {
