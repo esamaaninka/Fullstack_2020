@@ -83,11 +83,19 @@ export const voteAnecdote = (id) => {
   }
 }
 
-export const initAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes
+export const initAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes
+    })
   }
+  //
+  //return {
+  //  type: 'INIT_ANECDOTES',
+  //  data: anecdotes
+  //}
 }
 
 export default reducer
