@@ -42,14 +42,15 @@ const reducer = (state = [], action) => {
       return [...state, action.data]
     
     case 'VOTE':
-      const id = action.data.id
-      const anecdoteToChange = state.find(n => n.id === id)
-      const changedAnecdote = {
-        ...anecdoteToChange,
-        votes: anecdoteToChange.votes +1
-      }
-      return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote) 
-    
+   //   const id = action.data.id
+   //   const anecdoteToChange = state.find(n => n.id === id)
+   //   const changedAnecdote = {
+   //     ...anecdoteToChange,
+   //     votes: anecdoteToChange.votes +1
+   //   }
+   //   return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote) 
+      return state.map(a => a.id !== action.data.id ? a : action.data)
+
     case 'INIT_ANECDOTES':
       return action.data
     
@@ -75,12 +76,25 @@ export const newAnecdote = (content) => {
   }
 }
 
-export const voteAnecdote = (id) => {
-  //console.log('Voting id:', id)
-  return {
-    type: 'VOTE',
-    data: { id }
+//export const voteAnecdote = (id) => {
+export const voteAnecdote = (anecdote) => {
+  
+  return async dispatch => {
+    const updatedAnecdote = 
+      await anecdoteService.updateAnecdote({...anecdote, votes: anecdote.votes + 1})
+    
+    dispatch({
+      type: 'VOTE',
+      //data: updatedAnecdote.id
+      data: updatedAnecdote
+    })
   }
+  //
+  //console.log('Voting id:', id)
+  //return {
+  //  type: 'VOTE',
+  //  data: { id }
+  //}
 }
 
 export const initAnecdotes = () => {
