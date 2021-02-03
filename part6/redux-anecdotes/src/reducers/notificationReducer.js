@@ -13,7 +13,7 @@ const notificationReducer = (state = '', action) => {
 
 var timer =  null
 
-export const showNotification = (notification) => {
+export const showNotification = (notification, timeout) => {
     
    return async dispatch => {
     dispatch({
@@ -23,7 +23,7 @@ export const showNotification = (notification) => {
     clearTimeout(timer)
     timer = window.setTimeout(()=>{
       dispatch({type: 'HIDE_NOTIFICATION'})
-    }, 5*1000)   
+    }, timeout*1000)   
   }
 }
         
