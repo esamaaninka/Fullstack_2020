@@ -1,0 +1,2 @@
+bugs:
+- the alphabetical, creation order of anecdotes is messed if Brave browser, ok with Mozilla
