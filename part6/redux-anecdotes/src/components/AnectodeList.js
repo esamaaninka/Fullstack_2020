@@ -1,11 +1,11 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+//import { useDispatch, useSelector } from 'react-redux'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+//import { bindActionCreators } from 'redux'
 
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { showNotification } from '../reducers/notificationReducer'
-import anecdotes from '../services/anecdotes'
+//import anecdotes from '../services/anecdotes'
 
 
 
