@@ -16,11 +16,14 @@ var timer =  null
 export const showNotification = (notification, timeout) => {
     
    return async dispatch => {
+    
+    clearTimeout(timer)
+    
     dispatch({
       type: 'SHOW_NOTIFICATION',
       content: notification
     })
-    clearTimeout(timer)
+    
     timer = window.setTimeout(()=>{
       dispatch({type: 'HIDE_NOTIFICATION'})
     }, timeout*1000)   
