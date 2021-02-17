@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import {
   //BrowserRouter as Router,
   Switch, Route, Link,
-  useRouteMatch
+  useRouteMatch,
+  useHistory,
+  Redirect
 } from "react-router-dom"
 
 
@@ -25,6 +27,17 @@ const Menu = () => {
       <a href='about' style={padding}>about</a>
     </div>
   )*/
+}
+
+const Notification = ({notification}) => {
+  const style = {
+    border: 'solid',
+    color: 'red',
+    padding: 10,
+    borderWidth: 1
+  }
+  //console.log('Notification: ', notification)
+  return ( <div > { notification ? <p style={style}>{notification} </p> : null } </div> )
 }
 
 const Anecdote = ({ anecdote }) => {
@@ -79,7 +92,7 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
-
+  const history = useHistory()
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
@@ -88,6 +101,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    history.push('/')
   }
 
   return (
@@ -130,12 +144,18 @@ const App = () => {
       id: '2'
     }
   ])
-  console.log('App anecdotes: ',anecdotes)
+
   const [notification, setNotification] = useState('')
+  
+  //console.log('App anecdotes: ',anecdotes)
+  //console.log('App notification: ', notification)
+ 
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote "${anecdote.content}" created!`)
+    setTimeout(() => setNotification(''),10000)
     //setAnecdotes(anecdotes => [...anecdotes,anecdote])
     //console.log('why anecdotes not updated here but shows in app root ok ???', anecdotes)
   }
@@ -162,10 +182,9 @@ const App = () => {
 
   return (
     <div>
-  {//  <Router> 
-  }
       <div>
         <h1>Software anecdotes</h1>
+        <Notification notification={notification}/>
         <Menu />
       </div>
       <Switch>
@@ -182,9 +201,7 @@ const App = () => {
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
       </Switch>
-  {//  </Router>
-}
-    <div>
+      <div>
       <Footer />
     </div>
   </div>
