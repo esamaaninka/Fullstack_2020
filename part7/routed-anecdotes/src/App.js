@@ -111,6 +111,12 @@ const CreateNew = (props) => {
     })
     history.push('/')
   }
+  const clearFields = (event) => {
+    event.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
+  }
 
   return (
     <div>
@@ -126,6 +132,7 @@ const CreateNew = (props) => {
         <br/>
       <div>
         <button>create</button>
+        <button onClick={clearFields}>reset</button>
       </div>
       </form>
     </div>
