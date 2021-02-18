@@ -7,6 +7,7 @@ import {
   Redirect
 } from "react-router-dom"
 
+import  { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -88,22 +89,48 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
+  /*
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+*/
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
+  //const votes = useField('number')
 
   const history = useHistory()
   const handleSubmit = (e) => {
+    console.log('HandleSubmit')
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     history.push('/')
   }
 
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        content:
+        <input {...content} />
+        <br/>
+        author:
+        <input {...author} />
+        <br/>
+        info:
+        <input {...info} />
+        <br/>
+      <div>
+        <button>create</button>
+      </div>
+      </form>
+    </div>
+  )
+/*
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -123,7 +150,7 @@ const CreateNew = (props) => {
         <button>create</button>
       </form>
     </div>
-  )
+  ) */
 
 }
 
@@ -147,11 +174,12 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
   
-  //console.log('App anecdotes: ',anecdotes)
+  console.log('App anecdotes: ',anecdotes)
   //console.log('App notification: ', notification)
  
 
   const addNew = (anecdote) => {
+    console.log('addNew:', anecdote)
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`A new anecdote "${anecdote.content}" created!`)
