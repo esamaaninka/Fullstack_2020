@@ -20,14 +20,6 @@ const Menu = () => {
     <Link to='/about' style={padding}>about</Link>
 </div>
   )
-  /*
-  return (
-    <div>
-      <a href='anecdotes' style={padding}>anecdotes</a>
-      <a href='create' style={padding}>create new</a>
-      <a href='about' style={padding}>about</a>
-    </div>
-  )*/
 }
 
 const Notification = ({notification}) => {
@@ -89,19 +81,15 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  /*
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
-*/
-  const content = useField('content')
-  const author = useField('author')
-  const info = useField('info')
-  //const votes = useField('number')
+
+  const content = useField()
+  const author = useField()
+  const info = useField()
+  
 
   const history = useHistory()
   const handleSubmit = (e) => {
-    console.log('HandleSubmit')
+    //console.log('HandleSubmit')
     e.preventDefault()
     props.addNew({
       content: content.value,
@@ -118,17 +106,22 @@ const CreateNew = (props) => {
     info.reset()
   }
 
+
+  const stripInput = ({reset,...data}) => {
+    return data
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         content:
-        <input {...content} />
+        <input {...stripInput(content)} />
         <br/>
         author:
-        <input {...author} />
+        <input {...stripInput(author)} />
         <br/>
         info:
-        <input {...info} />
+        <input {...stripInput(info)} />
         <br/>
       <div>
         <button>create</button>
@@ -137,27 +130,7 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-/*
-  return (
-    <div>
-      <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
-        </div>
-        <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
-        </div>
-        <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
-        </div>
-        <button>create</button>
-      </form>
-    </div>
-  ) */
+
 
 }
 
@@ -181,18 +154,16 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
   
-  console.log('App anecdotes: ',anecdotes)
+  //console.log('App anecdotes: ',anecdotes)
   //console.log('App notification: ', notification)
  
 
   const addNew = (anecdote) => {
-    console.log('addNew:', anecdote)
+    //console.log('addNew:', anecdote)
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`A new anecdote "${anecdote.content}" created!`)
     setTimeout(() => setNotification(''),10000)
-    //setAnecdotes(anecdotes => [...anecdotes,anecdote])
-    //console.log('why anecdotes not updated here but shows in app root ok ???', anecdotes)
   }
 
   function anecdoteById(id) {
