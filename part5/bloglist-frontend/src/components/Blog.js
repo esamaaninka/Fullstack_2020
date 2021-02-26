@@ -10,9 +10,9 @@ const Blog = ({ blog, likeBlog, removeBlog }) => {
     marginBottom: 5
   }
 
-  const listStyle = {
+  /*const listStyle = {
     listStyleType: 0 // study how to get rid of bullets
-  }
+  }*/
 
   const handleBlogLiked = (event) => {
     event.preventDefault()
@@ -43,7 +43,7 @@ const Blog = ({ blog, likeBlog, removeBlog }) => {
   return (
     <div style={blogStyle} className='blog'>
       <ul>
-        <li>{blog.title}</li> 
+        <li>{blog.title}</li>
         <li>{blog.author} </li>
         <li>{blog.likes} {' '}
           <button id="like-button" label="Like" onClick={handleBlogLiked}>Like</button>
