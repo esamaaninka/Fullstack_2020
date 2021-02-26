@@ -6,12 +6,14 @@ import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
+const initMessage = { message: null, error: false }
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(initMessage)
 
   const blogFormRef = React.createRef()
 
@@ -47,9 +49,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setMessage({ message: 'Wrong credentials', error: true })
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(initMessage)
       }, 5000)
     }
   }
@@ -68,6 +70,10 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
         //setNewBlog('')
+        setMessage({ message:`Created new blog: "${returnedBlog.title}"`,error: false })
+        setTimeout(() => {
+          setMessage(initMessage)
+        }, 5000)
       })
   }
 
@@ -77,11 +83,15 @@ const App = () => {
       .update(blogObject.id, blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.map(b => b.id !== blogObject.id ? b : returnedBlog))
+        setMessage({ message: `Liked blog: "${returnedBlog.title}"`,error: false })
+        setTimeout(() => {
+          setMessage(initMessage)
+        }, 5000)
       })
       .catch(() => { // why not catching err ?
-        setErrorMessage('error in liking the blog')
+        setMessage({ message: 'error in liking the blog',error: true })
         setTimeout(() => {
-          setErrorMessage(null)
+          setMessage(initMessage)
         }, 5000)
       })
   }
@@ -99,23 +109,29 @@ const App = () => {
       //debugger
 
       console.log("catched error in removeBlog", error.response.data)
-      setErrorMessage(error.response.data)
+      setMessage(error.response.data)
       setTimeout(() => { // no error message window, how to render ?
-        setErrorMessage(null)
+        setMessage(null)
       }, 5000)
     }
   }
   */
+    //const removedBlog = blogs.find(blog => blog.id === id)
     blogService
       .remove(blogObject.id)
       .then( () => {
         setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+        console.log('Removed blog: ',blogObject.title )
+        setMessage({ message:`Removed successfully blog: "${blogObject.title}"`,error: false })
+        setTimeout(() => {
+          setMessage(initMessage)
+        }, 5000)
       })
       .catch ((error) => {
-        console.log(error.response.data)
-        setErrorMessage(error.response.data) // no error message window ?
+        console.log('Remove Blog err: ', error.response.data.error)
+        setMessage({ message: error.response.data.error, error: true }) // no error message window ?
         setTimeout(() => {
-          setErrorMessage(null)
+          setMessage(initMessage)
         }, 5000)
       })
   }
@@ -129,7 +145,7 @@ const App = () => {
   if(user === null)  {
     return (
       <div>
-        <Notification message={errorMessage} />
+        <Notification message={message} />
 
         <h2>Log in to the application</h2>
 
@@ -162,6 +178,7 @@ const App = () => {
 
   return (
     <div className='blogList'>
+      <Notification message={message} />
       <h2>Blogs</h2>
       <p>{user.name} is logged in</p>
       <button onClick={() => handleLogout()}> Logout </button>

@@ -34,12 +34,13 @@ const errorStyle = {
   marginBottom: 10
 }
 
-const Notification = ({ message, errorFlag }) => {
-  if(!message) return null
+const Notification = ({ message } ) => {
+  console.log('Notification: ', message.message, message.error)
+  if(!message.message) return null
 
   else return(
-    <div className="error" style={errorFlag === false ? messageStyle : errorStyle}>
-      {message}
+    <div className="error" style={message.error === false ? messageStyle : errorStyle}>
+      {message.message}
     </div>
   )
 }
