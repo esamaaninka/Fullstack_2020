@@ -1,18 +1,5 @@
 import React from 'react'
-/*
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className="error">
-      {message}
-    </div>
-  )
-}
-*/
-// messages and errors from 2e part2 example
+import { useSelector } from 'react-redux'
 
 const messageStyle = {
   color: 'green',
@@ -34,17 +21,17 @@ const errorStyle = {
   marginBottom: 10
 }
 
-const Notification = ({ message } ) => {
-  console.log('Notification: ', message.message, message.error)
-  if(!message.message) return null
+const Notification = () => {
 
-  else return(
-    <div className="error" style={message.error === false ? messageStyle : errorStyle}>
-      {message.message}
-    </div>
-  )
+  const notif = useSelector(state => state.notification)
+  //console.log('component/Notification got: ', notif.message, notif.errorStatus)
+  if (notif.message)
+    return (
+      <div style={!notif.errorStatus ? messageStyle : errorStyle}>
+        {notif.message}
+      </div>
+    )
+  else return null
 }
-
-
 
 export default Notification
