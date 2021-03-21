@@ -1,0 +1,20 @@
+{
+  "name": "library-backend",
+  "version": "1.0.0",
+  "description": "GraphQL backend, Fullstack Open 2020, part8 excercise",
+  "main": "library-backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Fullstack",
+    "React",
+    "GraphQL"
+  ],
+  "author": "Esa Maaninka",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.21.2",
+    "graphql": "^15.5.0"
+  }
+}
