@@ -1,5 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server')
 
+
 let authors = [
   {
     name: 'Robert Martin',
@@ -88,6 +89,7 @@ const typeDefs = gql`
         name: String!
         born: Int
         id: ID!
+        bookCount: Int
     }
     type Book {
         title: String!
@@ -99,15 +101,34 @@ const typeDefs = gql`
     type Query {
         bookCount: Int!
         authorCount: Int!
+        allBooks(author: String): [Book!]!
+        allAuthors: [Author!]!
     }
+  
 
 `
 
 const resolvers = {
   Query: {
       bookCount: () => books.length,
-      authorCount: () => authors.length
-  }
+      authorCount: () => authors.length,
+      allBooks: () => books,
+      allAuthors: () => authors
+  },
+  Author: {
+        bookCount: (root) => {
+            const countAuthorBooks = books.filter(function(book){
+                if(!book.author.localeCompare(root.name)) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            })
+            
+            return countAuthorBooks.length
+        }
+    }
 }
 
 const server = new ApolloServer({

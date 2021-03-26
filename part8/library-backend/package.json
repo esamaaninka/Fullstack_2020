@@ -4,6 +4,7 @@
   "description": "GraphQL backend, Fullstack Open 2020, part8 excercise",
   "main": "library-backend.js",
   "scripts": {
+    "dev": "nodemon library-backend.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -16,5 +17,8 @@
   "dependencies": {
     "apollo-server": "^2.21.2",
     "graphql": "^15.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
