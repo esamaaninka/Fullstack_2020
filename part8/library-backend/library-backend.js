@@ -112,7 +112,23 @@ const resolvers = {
   Query: {
       bookCount: () => books.length,
       authorCount: () => authors.length,
-      allBooks: () => books,
+      allBooks: (root, args) => {
+        console.log('allBooks args: ', root, args)  
+        //console.log('mapped books:')
+        if(!Object.keys(args).length) {
+            return books
+        }
+        else {            
+            return books.filter(function(book) {
+                if(!book.author.localeCompare(args.author)) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            })            
+        }
+    },
       allAuthors: () => authors
   },
   Author: {
