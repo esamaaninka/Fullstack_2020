@@ -101,7 +101,7 @@ const typeDefs = gql`
     type Query {
         bookCount: Int!
         authorCount: Int!
-        allBooks(author: String): [Book!]!
+        allBooks(author: String, genre: String): [Book!]!
         allAuthors: [Author!]!
     }
   
@@ -113,23 +113,64 @@ const resolvers = {
       bookCount: () => books.length,
       authorCount: () => authors.length,
       allBooks: (root, args) => {
-        console.log('allBooks args: ', root, args)  
-        //console.log('mapped books:')
+        // 4 cases, no filter or author, genre or both as parameter 
+        // no args return all books
         if(!Object.keys(args).length) {
             return books
+        } 
+        else { 
+            if(args.author){
+                const authorFilteredBooks = 
+                    books.filter(function(book) {
+                        if(!book.author.localeCompare(args.author)) {
+                            return true
+                        }
+                        else {
+                            return false
+                        }
+                    })
+                    
+                if(args.genre) {
+                     const genreFilteredAuthorBooks = authorFilteredBooks.filter(function(book){
+                        if(book.genres.includes(args.genre)) {
+                            return true
+                        }
+                        else {
+                            return false
+                        }
+                    })
+                    return genreFilteredAuthorBooks
+                }
+                // if no genre return author filtered books
+                return authorFilteredBooks
+                
+            }
+            // if genre as only parameter
+            if(args.genre){
+                return books.filter(function(book){
+                    if(book.genres.includes(args.genre)) {
+                        return true
+                    }
+                    else {
+                        return false
+                    }
+                })
+            }   
         }
-        else {            
-            return books.filter(function(book) {
+            
+            /* exc 8.4 return books by author
+            const authorBooks = books.filter(function(book) {
                 if(!book.author.localeCompare(args.author)) {
                     return true
                 }
                 else {
                     return false
                 }
-            })            
-        }
+            }) 
+            return authorBooks     */
     },
-      allAuthors: () => authors
+    
+    allAuthors: () => authors
   },
   Author: {
         bookCount: (root) => {
