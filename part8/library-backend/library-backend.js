@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
-
+const { v1: uuid } = require('uuid')
 
 let authors = [
   {
@@ -104,14 +104,27 @@ const typeDefs = gql`
         allBooks(author: String, genre: String): [Book!]!
         allAuthors: [Author!]!
     }
-  
+    type Mutation {
+        addBook(
+        title: String!
+        author: String!
+        published: Int!
+        genres: [String!]
+        ): Book
+    }
 
 `
+// miksi tuossa type Mutation addBook jos 
+//  author: Author  
+// niin kaatuu käännös, valittaa haluaa author mutta sai Author
+
+
 
 const resolvers = {
   Query: {
       bookCount: () => books.length,
       authorCount: () => authors.length,
+      allAuthors: () => authors,
       allBooks: (root, args) => {
         // 4 cases, no filter or author, genre or both as parameter 
         // no args return all books
@@ -157,20 +170,7 @@ const resolvers = {
                 })
             }   
         }
-            
-            /* exc 8.4 return books by author
-            const authorBooks = books.filter(function(book) {
-                if(!book.author.localeCompare(args.author)) {
-                    return true
-                }
-                else {
-                    return false
-                }
-            }) 
-            return authorBooks     */
-    },
-    
-    allAuthors: () => authors
+    }
   },
   Author: {
         bookCount: (root) => {
@@ -185,8 +185,27 @@ const resolvers = {
             
             return countAuthorBooks.length
         }
-    }
-}
+  },
+  Mutation: {
+      addBook: (root, args) => {
+          console.log('Mutation addBook:', args.title,args.author, args.genres)
+          //console.log('Mutated books: ', books)
+          if(!authors.find(a => a.name.includes(args.author) )) {
+              // create new author first
+              const newAuthor =  {name: args.author, id: uuid()}
+              console.log('creating new author: ', newAuthor)
+              authors = authors.concat(newAuthor)
+              args.author = newAuthor
+          }
+          console.log('Mutation addBook, adding book to author: ', args.author)
+          const book = {...args, id: uuid() }
+          books = books.concat(book)
+              
+          return book
+          }
+          
+      },
+} // Resolvers
 
 const server = new ApolloServer({
   typeDefs,
