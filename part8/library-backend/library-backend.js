@@ -188,17 +188,17 @@ const resolvers = {
   },
   Mutation: {
       addBook: (root, args) => {
-          console.log('Mutation addBook:', args.title,args.author, args.genres)
+          //console.log('Mutation addBook:', args.title,args.author, args.genres)
           //console.log('Mutated books: ', books)
           if(!authors.find(a => a.name.includes(args.author) )) {
               // create new author first
               const newAuthor =  {name: args.author, id: uuid()}
-              console.log('creating new author: ', newAuthor)
+              //console.log('creating new author: ', newAuthor)
               authors = authors.concat(newAuthor)
-              args.author = newAuthor
+              args.author = newAuthor.name // save only the name of the author to the book author field
           }
-          console.log('Mutation addBook, adding book to author: ', args.author)
           const book = {...args, id: uuid() }
+          //console.log('Mutation addBook new book: ', book)
           books = books.concat(book)
               
           return book

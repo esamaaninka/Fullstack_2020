@@ -1,23 +1,51 @@
+### 
 POST http://localhost:4000/graphql
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
 query {
   bookCount
-  allBooks(author: "Rober Martin") {title}
-  allAuthors {name}
+  allBooks {
+    title 
+    genres
+  }
+  allAuthors {name born bookCount}
 }
-
 ###
 
 POST http://localhost:4000/graphql
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
+query {
+  allBooks( genre:"refactoring") {
+    title 
+    genres 
+    published 
+  }
+}
+###
+
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query {
+  allBooks(author: "Robert Martin") {
+    title 
+    genres 
+    published 
+  }
+}
+###
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
 mutation {
   addBook(
-    title: "Esan kirja 2",
-    author:"Esa Maaninia"
+    title: "Lisätty kirja",
+    author:"Niilo Novelisti"
     published: 2021,
     genres: ["refactoring","agile"]
   ){
