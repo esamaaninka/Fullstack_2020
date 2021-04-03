@@ -54,3 +54,18 @@ mutation {
     genres
   }
 }
+
+###
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation {
+  editAuthor(
+    name: "Niilo Novelisti",
+    setBornTo: 1965
+  ){
+    name
+    born
+  }
+}
