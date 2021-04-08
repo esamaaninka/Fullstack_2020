@@ -1,0 +1,37 @@
+huom tässä vaiheessa palvelimella jos author on tyyppiä Author niin kaatuu, String
+
+allBooks query ei toimi jos hakuparametrina author, author {name} vika palvelimen
+päässä, kts. sen NOTES.txt
+
+newBook ei toimi, kaatuu tuohon author -virheeseen, palvelin palauttaa 400
+{
+	"0": {
+		"message": "Field \"author\" of type \"Author!\" must have a selection of subfields. Did you mean \"author { ... }\"?",
+		"locations": [
+			{
+				"line": 4,
+				"column": 5
+			}
+		],
+		"extensions": {
+			"code": "GRAPHQL_VALIDATION_FAILED",
+			"exception": {
+				"stacktrace": [
+					"GraphQLError: Field \"author\" of type \"Author!\" must have a selection of subfields. Did you mean \"author { ... }\"?",
+					"    at Object.Field (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/graphql/validation/rules/ScalarLeafsRule.js:40:31)",
+					"    at Object.enter (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/graphql/language/visitor.js:323:29)",
+					"    at Object.enter (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+					"    at visit (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/graphql/language/visitor.js:243:26)",
+					"    at Object.validate (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/graphql/validation/validate.js:69:24)",
+					"    at validate (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+					"    at Object.<anonymous> (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+					"    at Generator.next (<anonymous>)",
+					"    at fulfilled (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+					"    at process._tickCallback (internal/process/next_tick.js:68:7)"
+				]
+			}
+		}
+	}
+}
+[ "GraphQLError: Field \"author\" of type \"Author!\" must have a selection of subfields. 
+Did you mean \"author { ... }\"?", " at Object.Field (/home/esa/coding/Fullstack_2020/part8/library-backend/node_modules/graphql/validation/rules/ScalarLeafsRule.js:40:31
