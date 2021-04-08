@@ -7,10 +7,27 @@ query {
   bookCount
   allBooks {
     title 
+    author
     genres
   }
   allAuthors {name born bookCount}
 }
+
+###
+
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query {
+  allBooks {
+    title 
+    author
+    genres 
+    published 
+  }
+}
+
 ###
 
 POST http://localhost:4000/graphql
@@ -21,6 +38,7 @@ query {
   allBooks( genre:"refactoring") {
     title 
     genres 
+    author
     published 
   }
 }
@@ -44,12 +62,13 @@ X-REQUEST-TYPE: GraphQL
 
 mutation {
   addBook(
-    title: "Lisätty kirja",
+    title: "Lisätty kirja4",
     author:"Niilo Novelisti"
     published: 2021,
     genres: ["refactoring","agile"]
   ){
     title
+    author 
   	published
     genres
   }

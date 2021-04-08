@@ -94,7 +94,7 @@ const typeDefs = gql`
     type Book {
         title: String!
         published: Int!
-        author: Author!
+        author: String!
         id: ID!
         genres: [String!]
     }
@@ -192,7 +192,7 @@ const resolvers = {
   },
   Mutation: {
         addBook: (root, args) => {
-          //console.log('Mutation addBook:', args.title,args.author, args.genres)
+          console.log('Mutation addBook:', args.title,args.author, args.genres)
           //console.log('Mutated books: ', books)
           if(!authors.find(a => a.name.includes(args.author) )) {
               // create new author first
