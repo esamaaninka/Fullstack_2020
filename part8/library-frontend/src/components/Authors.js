@@ -1,17 +1,29 @@
   
-import React from 'react'
+import React, {useState} from 'react'
 
-import { useQuery } from '@apollo/client'
-import { ALL_AUTHORS } from '../queries'
+import { useQuery, useMutation } from '@apollo/client'
+import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
 const Authors = (props) => {
-  const result = useQuery(ALL_AUTHORS)
+  const [author, setAuthor] = useState('')
+  const [born, setBorn] = useState('')
 
-  console.log('Component Author ', props)
+  const result = useQuery(ALL_AUTHORS)
+  const [editBday] = useMutation(EDIT_AUTHOR)
+
   if (!props.show) {
     return null
   }
 
+  const submit = async (event) => {
+    event.preventDefault()
+    console.log('Author form trying to updade bdate ', author, born)
+  
+    editBday({variables:{author, born}})
+
+    setAuthor('')
+    setBorn('')
+  }
   if (result.loading)  {
     return <div>loading...</div>
   }
@@ -43,7 +55,24 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
+      <h2>Set birthyear</h2>
+      <form onSubmit={submit}>
+            <div>
+              author
+              <input
+                value={author}
+                onChange={({target}) => setAuthor(target.value)}
+                />
+            </div>
+            <div>
+              born
+              <input
+                value={born}
+                onChange={({ target }) => setBorn(parseInt(target.value))}
+              />
+            </div>
+            <button type='submit'>update author</button>
+      </form>
     </div>
   )
 }
