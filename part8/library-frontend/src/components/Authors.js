@@ -1,12 +1,14 @@
   
 import React, {useState} from 'react'
+import Select from 'react-select'
 
 import { useQuery, useMutation } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS, EDIT_AUTHOR } from '../queries'
 
 const Authors = (props) => {
-  const [author, setAuthor] = useState('')
+  //const [author, setAuthor] = useState('')
   const [born, setBorn] = useState('')
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const result = useQuery(ALL_AUTHORS)
   const [editBday] = useMutation(EDIT_AUTHOR, {
@@ -21,9 +23,10 @@ const Authors = (props) => {
     event.preventDefault()
     //console.log('Author form trying to updade bdate ', author, born, typeof born)
 
-    editBday({ variables: { author, bdate: born }})
+    editBday({ variables: { author: selectedOption.value, bdate: born }})
 
-    setAuthor('')
+    //setAuthor('')
+    setSelectedOption(null)
     setBorn('')
   }
   if (result.loading)  {
@@ -60,11 +63,17 @@ const Authors = (props) => {
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
             <div>
-              author
+              <Select
+                defaultValue={selectedOption}
+                onChange={setSelectedOption}
+                options={authors.map(a => ({value: a.name, label: a.name}))}
+                />
+              {/*author
               <input
                 value={author}
                 onChange={({target}) => setAuthor(target.value)}
                 />
+              */}
             </div>
             <div>
               born

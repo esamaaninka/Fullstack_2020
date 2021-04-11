@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 
-import { useQuery } from '@apollo/client'
+//import { useQuery } from '@apollo/client'
 import { CREATE_BOOK, ALL_AUTHORS,  ALL_BOOKS } from '../queries'
 
 const NewBook = (props) => {
@@ -22,8 +22,8 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
     
-    console.log('Component NewBook, add book...')
-    console.log('variables: ', title,author,published,genres)
+    //console.log('Component NewBook, add book...')
+    //console.log('variables: ', title,author,published,genres)
 
     createBook({variables: {title, author, published, genres}})
 
