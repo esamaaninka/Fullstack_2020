@@ -1,5 +1,24 @@
 const { ApolloServer, gql } = require('apollo-server')
-const { v1: uuid } = require('uuid')
+//const { v1: uuid } = require('uuid')
+
+const mongoose = require('mongoose')
+const Author = require('./models/author')
+const Book = require('./models/book')
+
+//const MONGODB_URI = 'mongodb+srv://fullstack:halfstack@cluster0-ostce.mongodb.net/graphql?retryWrites=true'
+const MONGODB_URI = 'mongodb+srv://esa-fullstack:Fullstack6565@cluster0.fhhrm.mongodb.net/graphql?retryWrites=true'
+
+
+console.log('connecting to', MONGODB_URI)
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
+
 
 let authors = [
   {
@@ -94,7 +113,7 @@ const typeDefs = gql`
     type Book {
         title: String!
         published: Int!
-        author: String!
+        author: Author!
         id: ID!
         genres: [String!]
     }
@@ -126,9 +145,14 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-      bookCount: () => books.length,
-      authorCount: () => authors.length,
-      allAuthors: () => authors,
+      //bookCount: () => books.length,
+      bookCount: () => Book.collection.countDocuments(),
+      //authorCount: () => authors.length,
+      authorCount: () => Author.collection.countDocuments(),
+      //allAuthors: () => authors,
+      allAuthors: () => {
+        return Author.find({})
+      },
       allBooks: (root, args) => {
         // 4 cases, no filter or author, genre or both as parameter 
         // no args return all books
@@ -191,7 +215,8 @@ const resolvers = {
         }
   },
   Mutation: {
-        addBook: (root, args) => {
+        addBook: async (root, args) => {
+          /*
           console.log('Mutation addBook:', args.title,args.author, args.genres)
           //console.log('Mutated books: ', books)
           if(!authors.find(a => a.name.includes(args.author) )) {
@@ -205,10 +230,34 @@ const resolvers = {
           //console.log('Mutation addBook new book: ', book)
           books = books.concat(book)
               
+          return book */
+          
+          // luo author ensin, jos ei ole olemassa
+          //try {
+          let author = await Author.findOne({name: args.author})
+          if(!author) {
+            //console.log(`Author ${args.author} not found, creating it`)
+            author = new Author({name: args.author})
+            //console.log("Author created: ", author)
+          
+          }
+          const book = new Book({...args,author})
+          console.log('addBook: ', book)
+          
+          try {
+            await book.save()
+            await author.save()
+          } catch (error) {
+            console.log("addBook error: ", error.message)
+            throw new UserInputError(error.message, {
+              invalidArgs: args,
+            })
+          }
           return book
-          },
+
+        },
         editAuthor: (root, args) => {
-            //console.log('editAuthor editing: ',args.name, args.setBornTo)
+            console.log('editAuthor editing: ',args.name, args.setBornTo)
             const author = authors.find(a => !a.name.localeCompare(args.name))
             if(author) {
                 author.born = args.setBornTo

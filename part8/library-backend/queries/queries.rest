@@ -5,11 +5,8 @@ X-REQUEST-TYPE: GraphQL
 
 query {
   bookCount
-  allBooks {
-    title 
-    author
-    genres
-  }
+  authorCount
+  allBooks { title genres }
   allAuthors {name born bookCount}
 }
 
@@ -62,8 +59,8 @@ X-REQUEST-TYPE: GraphQL
 
 mutation {
   addBook(
-    title: "Lisätty kirja4",
-    author:"Niilo Novelisti"
+    title: "Lisätty kirja",
+    author: {name: {"Niilo Novelisti"}},
     published: 2021,
     genres: ["refactoring","agile"]
   ){
