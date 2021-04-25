@@ -19,7 +19,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true,
     console.log('error connection to MongoDB:', error.message)
   })
 
-
+/*
 let authors = [
   {
     name: 'Robert Martin',
@@ -45,12 +45,12 @@ let authors = [
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
 ]
-
+*/
 /*
  * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
  * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
 */
-
+/*
 let books = [
   {
     title: 'Clean Code',
@@ -102,7 +102,7 @@ let books = [
     genres: ['classic', 'revolution']
   },
 ]
-
+*/
 const typeDefs = gql`
     type Author {
         name: String!
@@ -137,11 +137,6 @@ const typeDefs = gql`
     }
 
 `
-// miksi tuossa type Mutation addBook jos 
-//  author: Author  
-// niin kaatuu käännös, valittaa haluaa author mutta sai Author
-
-
 
 const resolvers = {
   Query: {
@@ -157,10 +152,12 @@ const resolvers = {
         // 4 cases, no filter or author, genre or both as parameter 
         // no args return all books
         if(!Object.keys(args).length) {
-            return books
+            //return books
+            return Book.find({})
         } 
         else { 
             if(args.author){
+              /*
                 const authorFilteredBooks = 
                     books.filter(function(book) {
                         if(!book.author.localeCompare(args.author)) {
@@ -170,6 +167,8 @@ const resolvers = {
                             return false
                         }
                     })
+                    
+            
                     
                 if(args.genre) {
                      const genreFilteredAuthorBooks = authorFilteredBooks.filter(function(book){
@@ -184,18 +183,20 @@ const resolvers = {
                 }
                 // if no genre return author filtered books
                 return authorFilteredBooks
-                
+             */   
             }
             // if genre as only parameter
             if(args.genre){
-                return books.filter(function(book){
+                //console.log("allBooks by genre: ", args.genre)
+                return Book.find({genres: args.genre })
+                /*return books.filter(function(book){
                     if(book.genres.includes(args.genre)) {
                         return true
                     }
                     else {
                         return false
                     }
-                })
+                })*/
             }   
         }
     }
@@ -258,13 +259,24 @@ const resolvers = {
         },
         editAuthor: (root, args) => {
             console.log('editAuthor editing: ',args.name, args.setBornTo)
-            const author = authors.find(a => !a.name.localeCompare(args.name))
+            /*const author = authors.find(a => !a.name.localeCompare(args.name))
             if(author) {
                 author.born = args.setBornTo
                 return author
             }
             return null // author not in system
-
+            */
+           let au = Author.findOneAndUpdate({name: args.name},{born: args.setBornTo}, { new: true }, function(
+             err,result
+           ){
+             if(err){
+               console.log("Error", err)
+               return null
+             } else {
+               console.log("No err",au)
+               return au
+             }
+           })
         }
           
       },
