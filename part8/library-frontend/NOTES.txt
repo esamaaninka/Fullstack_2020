@@ -1,4 +1,4 @@
-huom tässä vaiheessa palvelimella jos author on tyyppiä Author niin kaatuu, String
+huom ennen harjoitusta 8.13 palvelimella jos author on tyyppiä Author niin kaatuu, String pelittää
 
 allBooks query ei toimi jos hakuparametrina author, author {name} vika palvelimen
 päässä, kts. sen NOTES.txt

@@ -257,8 +257,8 @@ const resolvers = {
           return book
 
         },
-        editAuthor: (root, args) => {
-            console.log('editAuthor editing: ',args.name, args.setBornTo)
+        editAuthor: async (root, args) => {
+            //console.log('editAuthor editing: ',args.name, args.setBornTo)
             /*const author = authors.find(a => !a.name.localeCompare(args.name))
             if(author) {
                 author.born = args.setBornTo
@@ -266,17 +266,17 @@ const resolvers = {
             }
             return null // author not in system
             */
-           let au = Author.findOneAndUpdate({name: args.name},{born: args.setBornTo}, { new: true }, function(
-             err,result
-           ){
-             if(err){
-               console.log("Error", err)
-               return null
-             } else {
-               console.log("No err",au)
-               return au
-             }
-           })
+           
+           try{
+              let author = await Author.findOneAndUpdate({name: args.name},{born: args.setBornTo}, { new: true })
+              //console.log('editAuthor got: ',author )
+              return author // if author not found returns null -> throw error... 
+            } catch(error) {
+              //console.log("editAuthr error: ", error.message)
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
         }
           
       },

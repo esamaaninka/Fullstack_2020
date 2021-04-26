@@ -7,7 +7,7 @@ query {
   bookCount
   authorCount
   allBooks { title genres }
-  allAuthors {name born bookCount}
+  allAuthors {name born}
 }
 
 ###
@@ -19,7 +19,7 @@ X-REQUEST-TYPE: GraphQL
 query {
   allBooks {
     title 
-    author
+    author {name}
     genres 
     published 
   }
@@ -32,10 +32,9 @@ Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
 query {
-  allBooks( genre:"refactoring") {
+  allBooks( genre:"agile") {
     title 
     genres 
-    author
     published 
   }
 }
@@ -59,13 +58,13 @@ X-REQUEST-TYPE: GraphQL
 
 mutation {
   addBook(
-    title: "Lisätty kirja",
-    author: {name: {"Niilo Novelisti"}},
-    published: 2021,
-    genres: ["refactoring","agile"]
+    title: "Lisätty kirja 5",
+    author: "Niilo Nurin",
+    published: 2020,
+    genres: ["refactoring","lifestyle"]
   ){
     title
-    author 
+    author {name}
   	published
     genres
   }
@@ -78,8 +77,8 @@ X-REQUEST-TYPE: GraphQL
 
 mutation {
   editAuthor(
-    name: "Niilo Novelisti",
-    setBornTo: 1965
+    name: "Niilo Kirjuri",
+    setBornTo: 1986
   ){
     name
     born
