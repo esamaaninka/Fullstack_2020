@@ -202,8 +202,8 @@ const resolvers = {
     }
   },
   Author: {
-        bookCount: (root) => {
-            const countAuthorBooks = books.filter(function(book){
+        bookCount: async (root,args) => {
+            /*const countAuthorBooks = books.filter(function(book){
                 if(!book.author.localeCompare(root.name)) {
                     return true
                 }
@@ -212,7 +212,21 @@ const resolvers = {
                 }
             })
             
-            return countAuthorBooks.length
+            return countAuthorBooks.length */
+          try{
+            console.log('bookCount for author: ', root.name)
+            // TÄSSÄ PITÄISI KAIVAA JOTENKIN AUTHOR ID HAKUKRITEERIKSI, TAI MITEN YHDISTÄÄ 
+            // 2 COLLECTION KAUTTA HAKU ???
+            const authorBooks = await Book.countDocuments({author: root.name})
+            
+            console.log('bookCount found: ', authorBooks)
+            return 1
+          }catch (error) {
+              console.log("bookCount error: ", error.message)
+              throw new UserInputError(error.message, {
+                invalidArgs: args,
+              })
+            }
         }
   },
   Mutation: {
@@ -244,6 +258,7 @@ const resolvers = {
           }
           const book = new Book({...args,author})
           console.log('addBook: ', book)
+          // add book to author ???
           
           try {
             await book.save()
