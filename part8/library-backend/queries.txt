@@ -1,0 +1,45 @@
+
+
+query {
+  allBooks {
+    title 
+    genres 
+    published 
+    author
+  }
+}
+
+query {
+  bookCount
+  authorCount 
+  allAuthors {name}
+  allBooks {title published}
+}
+--------------
+mutation{
+  addBook(title: "koe", author: "Niilo Kirjuri",published: 1221,genres: "age"){
+    title
+    author {name}
+    published
+    genres
+  }
+}
+------------------
+mutation{
+  editAuthor(name: "Niilo Kirjuri", setBornTo: 1990) {
+    name
+    born
+  }
+}
+---------------
+mutation editAuthor($name:String!, $setBornTo:Int!){
+  editAuthor(name: $name, setBornTo: $setBornTo) {
+    name
+    born
+  }
+}
+
+{
+  "name": "Niilo Kirjuri", 
+  "setBornTo": 1995
+}
