@@ -58,8 +58,8 @@ X-REQUEST-TYPE: GraphQL
 
 mutation {
   addBook(
-    title: "Lisätty kirja 5",
-    author: "Niilo Nurin",
+    title: "Lisätty kirja 8",
+    author: "Esa Kirjailija",
     published: 2020,
     genres: ["refactoring","lifestyle"]
   ){
