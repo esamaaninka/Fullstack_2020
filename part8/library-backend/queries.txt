@@ -12,8 +12,8 @@ query {
 query {
   bookCount
   authorCount 
-  allAuthors {name}
-  allBooks {title published}
+  allAuthors {name, born, bookCount}
+  allBooks {title published, genres}
 }
 --------------
 mutation{

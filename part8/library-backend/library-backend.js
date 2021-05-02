@@ -214,15 +214,11 @@ const resolvers = {
             
             return countAuthorBooks.length */
           try{
-            console.log('bookCount for author: ', root.name)
-            // TÄSSÄ PITÄISI KAIVAA JOTENKIN AUTHOR ID HAKUKRITEERIKSI, TAI MITEN YHDISTÄÄ 
-            // 2 COLLECTION KAUTTA HAKU ???
-            const authorBooks = await Book.countDocuments({author: root.name})
+            const author = await Author.findOne({name: root.name})
             
-            console.log('bookCount found: ', authorBooks)
-            return 1
+            return author.bookCount
           }catch (error) {
-              console.log("bookCount error: ", error.message)
+              //console.log("bookCount error: ", error.message)
               throw new UserInputError(error.message, {
                 invalidArgs: args,
               })
@@ -257,8 +253,7 @@ const resolvers = {
           
           }
           const book = new Book({...args,author})
-          console.log('addBook: ', book)
-          // add book to author ???
+          author.bookCount = author.bookCount +1
           
           try {
             await book.save()
