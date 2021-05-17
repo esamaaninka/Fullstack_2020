@@ -51,17 +51,6 @@ query {
     published 
   }
 }
-###
-
-POST http://localhost:4000/graphql
-Content-Type: application/json
-X-REQUEST-TYPE: GraphQL
-
-mutation {
-  login(username:"Pekka Pätkä",password: "secred"){
-    value
-  }
-}
 
 
 
@@ -69,6 +58,7 @@ mutation {
 POST http://localhost:4000/graphql
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBla2thIFBvdXRhIiwiaWQiOiI2MDljMjY3NjA2MzA4YjVlNTlkN2VhYzYiLCJpYXQiOjE2MjEyNTg1NDB9.gUOf6FC95r1orNdnVZgzJIwXfqwAZ9RuF5E4NgVrjCw"
 
 mutation {
   addBook(
@@ -84,11 +74,24 @@ mutation {
   }
 }
 
-### EI TOIMI
+###
+
 POST http://localhost:4000/graphql
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
-Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBla2thIFDDpHRrw6QiLCJpZCI6IjYwOTI2MGRkZjhmZDUwMzQ2MTg1MmNmZCIsImlhdCI6MTYyMDg0NzEyOX0.vUaWp_Zu8zKsaSvfzuacwvRP6ryL-FiowbBrWtFU7GM"
+
+mutation {
+  login(username:"Pekka Pouta",password: "secred"){
+    value
+  }
+}
+
+
+### EI TOIMI kts NOTES.txt
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBla2thIFBvdXRhIiwiaWQiOiI2MDljMjY3NjA2MzA4YjVlNTlkN2VhYzYiLCJpYXQiOjE2MjEyNTk1NjR9.tIfCNjYeNKIJrraFdBGqrOvyNmFl4Ser2P5RywT4V_M"
 
 mutation {
   editAuthor(

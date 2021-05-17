@@ -170,6 +170,7 @@ const resolvers = {
       //TÄMÄ EI TOIMI, PALAUTTAA NULL (createUser ja Login toimii, addBook ja editAuthhor validointi tekemättä)
       
       me: (root, args, context) => {
+        console.log("query me: ", context.currentUser)
         return context.currentUser
       },
       allBooks: (root, args) => {
@@ -250,7 +251,7 @@ const resolvers = {
         }
   },
   Mutation: {
-        addBook: async (root, args) => {
+        addBook: async (root, args, { currentUser }) => {
           /*
           console.log('Mutation addBook:', args.title,args.author, args.genres)
           //console.log('Mutated books: ', books)
@@ -269,6 +270,14 @@ const resolvers = {
           
           // luo author ensin, jos ei ole olemassa
           //try {
+
+          console.log('addBook I am: ', currentUser)
+
+          if (!currentUser) {
+            //console.log('addBook throw error no currentUser')
+            throw new AuthenticationError("not authenticated")
+          }
+
           let author = await Author.findOne({name: args.author})
           if(!author) {
             //console.log(`Author ${args.author} not found, creating it`)
@@ -291,7 +300,7 @@ const resolvers = {
           return book
 
         },
-        editAuthor: async (root, args, {currentUser}) => {
+        editAuthor: async (root, args, context) => {
             //console.log('editAuthor editing: ',args.name, args.setBornTo)
             /*const author = authors.find(a => !a.name.localeCompare(args.name))
             if(author) {
@@ -300,15 +309,18 @@ const resolvers = {
             }
             return null // author not in system
             */
-            //const currentUser = context.currentUser
-            console.log('I am: ', currentUser)
+            const currentUser = context.currentUser
+            console.log('editAuthor I am: ', currentUser)
 
+            // mistä tämä currentUser saa arvonsa ? kun suoritan Playground kautta niin ok, muttaREST kutsussa
+            // tätä ei ole määritelty (molemmat Login ok)
             if (!currentUser) {
               throw new AuthenticationError("not authenticated")
             }
            try{
               let author = await Author.findOneAndUpdate({name: args.name},{born: args.setBornTo}, { new: true })
               //console.log('editAuthor got: ',author )
+              //await currentUser.save()
               return author // if author not found returns null -> throw error... 
             } catch(error) {
               //console.log("editAuthr error: ", error.message)
@@ -328,6 +340,8 @@ const resolvers = {
             })
         },
         login: async (root, args) => {
+          console.log('Login attempt by: ', args.username)
+
           const user = await User.findOne({ username: args.username })
       
           if ( !user || args.password !== 'secred' ) {
@@ -338,7 +352,6 @@ const resolvers = {
             username: user.username,
             id: user._id,
           }
-      
           return { value: jwt.sign(userForToken, JWT_SECRET) }
         },          
       }, // Mutations
@@ -354,6 +367,8 @@ const server = new ApolloServer({
         auth.substring(7), JWT_SECRET    
       )      
       const currentUser = await User.findById(decodedToken.id) //.populate('friends')      
+      // miksi tämä ei tulosta kun REST clientillä kutsuu ? PlayGround kautta ok ??
+      console.log('server context cb currentUser: ', currentUser)
       return { currentUser }    
     }  
   }
